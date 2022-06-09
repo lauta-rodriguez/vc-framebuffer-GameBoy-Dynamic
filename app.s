@@ -6,7 +6,6 @@
 .include "gameboy.s"
 
 .globl main
-//test
 
 .equ SCREEN_PIXELS_div_2_menos_1, SCREEN_PIXELS/2 - 1
 screen_pixels_div_2_menos_1: .dword SCREEN_PIXELS_div_2_menos_1 // Último indice tomando los elementos como dword
