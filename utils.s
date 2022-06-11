@@ -79,6 +79,24 @@ delay:
     add sp, sp, 16
     ret
 
+delayZzzlow: 
+    sub sp, sp, 16
+    stur x9, [sp,8]
+    stur lr, [sp,0]
+
+	mov x9, 50
+    delayZzzlowLoop:
+    	cbz x9, endDelayZzz
+    	sub x9, x9, #1
+        bl delay				
+    	b delayZzzlowLoop
+    
+    endDelayZzz:
+    ldur x9, [sp,8]
+    ldur lr, [sp,0]
+    add sp, sp, 16
+    ret
+    
 paintPixel:
     //------------------
     // do pixel in the given (x,y) coordinates

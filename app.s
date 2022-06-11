@@ -17,7 +17,7 @@ main:
 	ldr x0, =bufferSecundario // Pongo en x0 la dirección base del buffer secundario
 
 	//---------------- CODE HERE ------------------------------------
-
+reset:
 	bl drawWindow
 
   	// FLOOR
@@ -140,7 +140,7 @@ endZoomIn:
 	sub x2, x2, 1
 
 	movz x10, 0xd6, lsl 16
-    movk x10, 0xffff, lsl 0
+    movk x10, 0xffff, lsl 0 
 	
 	// calculates display width
     add x5, x5, x5       // doubles the horizontal margin
@@ -151,8 +151,87 @@ endZoomIn:
     sub x4, x4, x6      // substracts it from border height
 	
 	bl paintRectangle
-	bl actualizarFrameBuffer	
+	bl delay
+	bl delay
+	bl delay
+	bl delay
 	
+	//movz x18, 0xbb, lsl 16
+	//movk x18, 0xc7c7, lsl 0
 
+	movz x18, 0x41, lsl 16
+    movk x18, 0x533b, lsl 0
 
-infloop: b infloop
+	movz x19, 0x9e, lsl 16
+    movk x19, 0x9a75, lsl 0
+
+    //movz x19, 0xb1, lsl 16
+    //movk x19, 0xb3b3, lsl 0
+
+    mov x17, 1
+    mov x15, 320
+    mov x16, 340
+
+loopPlane:
+	cmp x16, 140
+	b.le endloopPlane
+    bl paintPlane
+	
+	bl actualizarFrameBuffer
+
+	bl delay
+	sub x16, x16, 3
+	bl paintRectangle
+	b loopPlane
+
+endloopPlane: 
+	bl paintRectangle
+
+	mov x17, 2
+	bl paintPlane
+	bl actualizarFrameBuffer
+	bl delay
+	
+	add x15, x15, 2
+	mov x17, 3
+	bl paintRectangle
+	bl paintPlane
+	bl actualizarFrameBuffer
+	bl delay
+
+	add x15, x15, 2
+	mov x17, 4
+	bl paintRectangle
+	bl paintPlane
+	bl actualizarFrameBuffer
+	bl delay
+
+	add x15, x15, 2
+	mov x17, 4
+	bl paintRectangle
+	bl paintPlane
+	bl actualizarFrameBuffer
+	bl delay
+
+	add x15, x15, 2
+	mov x17, 5
+	bl paintRectangle
+	bl paintPlane
+	bl actualizarFrameBuffer
+	bl delay
+
+retreat:
+	cmp x16, 350
+	b.gt endRetreat
+
+	bl paintRectangle
+	bl paintPlane
+	bl actualizarFrameBuffer
+	bl delay
+
+	add x16, x16, 3
+	b retreat
+endRetreat:
+	bl delayZzzlow
+
+infloop: b reset
