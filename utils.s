@@ -1325,5 +1325,1600 @@ drawButtons: // done
     //------------------
 
 
+ifPixelInRoundedTrianglePaintIT:
+    ///////////////////////////////////////////
+    //  This procedure checks if the point
+    //  (x1,x2) belongs to the rounded triangle and
+    //  paints it if it does
+    //  
+    //  parameters:
+    //  x10 → colour 
+    //  (x1,x2) → current pixel
+    //  x17 → square distance bewteen (x3, x4) and (x5, x6)
+    //  x18 → square distance bewteen (x3, x4) and (x7, x8)
+    //  x19 → square distance bewteen (x5, x6) and (x7, x8)
+    ///////////////////////////////////////////
+   
+    sub sp, sp, 40
+    stur x21, [sp,32]     
+    stur x9, [sp,24]     
+    stur x2, [sp,16]     
+    stur x1, [sp,8]      
+    stur lr, [sp]
+
+    // calculate the square distance (x21) bewteen (x1, x2) and (x3, x4) 
+    sub x21, x1, x3    // (x1-x3)
+    mul x21, x21, x21  // (x1-x3)²
+    sub x9, x2, x4     // (x2-x4)
+    mul x9, x9, x9     // (x2-x4)²
+    add x21, x21, x9   // (x1-x3)² + (x2-x4)² => square distance bewteen (x1, x2) and (x3, x4) 
+
+    cmp x21, x17
+    b.gt endPiT
+    cmp x21, x18
+    b.gt endPiT
+
+    // calculate the square distance (x21) bewteen (x1, x2) and (x5, x6) 
+    sub x21, x1, x5    // (x1-x5)
+    mul x21, x21, x21  // (x1-x5)²
+    sub x9, x2, x6     // (x2-x6)
+    mul x9, x9, x9     // (x2-x6)²
+    add x21, x21, x9   // (x1-x5)² + (x2-x6)² => square distance bewteen (x1, x2) and (x5, x6) 
+
+    cmp x21, x17
+    b.gt endPiT
+    cmp x21, x19
+    b.gt endPiT
+
+    // calculate the square distance (x21) bewteen (x1, x2) and (x7, x8) 
+    sub x21, x1, x7    // (x1-x7)
+    mul x21, x21, x21  // (x1-x7)²
+    sub x9, x2, x8     // (x2-x8)
+    mul x9, x9, x9     // (x2-x8)²
+    add x21, x21, x9   // (x1-x7)² + (x2-x8)² => square distance bewteen (x1, x2) and (x7, x8) 
+
+    cmp x21, x18
+    b.gt endPiT
+    cmp x21, x19
+    b.gt endPiT
+
+    // paints the pixel (x1,x2)
+    bl paintPixel
+
+    endPiT: 
+    ldur x21, [sp,32]     
+    ldur x9, [sp,24]     
+    ldur x2, [sp,16]     
+    ldur x1, [sp,8]      
+    ldur lr, [sp]
+    add sp, sp, 40
+    ret
+
+paintRoundedTriangle:
+    ///////////////////////////////////////////
+    //  given 3 differents points (x3, x4) (x5, x6) (x7, x8)  paints a triangle  
+    //  disclaimer: these points must not belong to the same straight line because the 
+    //  program does not take that into account
+    //  x10 -> colour
+    ///////////////////////////////////////////
+
+    sub sp, sp, 160
+    stur x19,[sp,152]   // square distance bewteen (x5, x6) and (x7, x8)
+    stur x18,[sp,144]   // square distance bewteen (x3, x4) and (x7, x8)
+    stur x17,[sp,136]   // square distance bewteen (x3, x4) and (x5, x6)
+    stur x16,[sp,128]   // height of the squared
+    stur x15,[sp,120]   // base of the squared
+    stur x14,[sp,112]   // max(x4, x6, x8)
+    stur x13,[sp,104]   // min(x4, x6, x8)
+    stur x12,[sp,96]    // max(x3, x5, x7)
+    stur x11,[sp,88]    // min(x3, x5, x7) 
+    stur x10,[sp,80]   
+    stur x9, [sp,72]    // auxiliar
+    stur x8, [sp,64]   
+    stur x7, [sp,56]   
+    stur x6, [sp,48]    
+    stur x5, [sp,40]    
+    stur x4, [sp,32]    
+    stur x3, [sp,24]    
+    stur x2, [sp,16]
+    stur x1, [sp,8]
+    stur lr, [sp]       // return pointer
+
+    // calculate the min(x3, x5, x7) and store it in x11
+    cmp x3, x5
+    b.gt min_x5
+    mov x11, x3 // x3 < x5 => x11<-x3
+    b compare_x7_x11
+    min_x5:
+    mov x11, x5 // x5 < x3 => x11<-x5
+    compare_x7_x11:
+    cmp x7, x11
+    b.gt end_min_x
+    mov x11, x7 // x7 < x11 => x11<-x7
+    end_min_x:
+
+    // calculate the max(x3, x5, x7) and store it in x12
+    cmp x3, x5
+    b.gt max_x3
+    mov x12, x5 // x5 > x3 => x12<-x5
+    b compare_x7_x12
+    max_x3:
+    mov x12, x3 // x3 > x5 => x12<-x3
+    compare_x7_x12:
+    cmp x7, x12
+    b.lt end_max_x
+    mov x12, x7 // x7 > x12 => x12<-x7
+    end_max_x:
+
+    // calculate the min(x4, x6, x8) and store it in x13
+    cmp x4, x6
+    b.gt min_x6
+    mov x13, x4 // x4 < x6 => x13<-x4
+    b compare_x8_x13
+    min_x6:
+    mov x13, x6 // x6 < x4 => x13<-x6
+    compare_x8_x13:
+    cmp x8, x13
+    b.gt end_min_y
+    mov x13, x8 // x8 < x13 => x13<-x8
+    end_min_y:
+
+    // calculate the max(x4, x6, x8) and store it in x14
+    cmp x4, x6
+    b.gt max_x4
+    mov x14, x6 // x6 > x4 => x14<-x6
+    b compare_x8_x14
+    max_x4:
+    mov x14, x4 // x4 > x6 => x14<-x4
+    compare_x8_x14:
+    cmp x8, x14
+    b.lt end_max_y
+    mov x14, x8 // x8 > x14 => x14<-x8
+    end_max_y:
+
+    // checking if x11, x12, x13 and x14 are outside the limits of the framebuffer
+    cmp x11, 0
+    b.ge check_x12
+    mov x11, 0   // x11 is out of bounds
+    check_x12:
+    cmp x12, 0
+    b.ge check_x13
+    mov x12, 0   // x12 is out of bounds
+    check_x13:
+    cmp x13, SCREEN_WIDTH
+    b.lt check_x14
+    mov x13, 639 // x13 is out of bounds
+    check_x14:
+    cmp x14, SCREEN_HEIGH
+    b.lt end_check
+    mov x14, 479 // x14 is out of bounds
+    end_check:
+    
+
+    // calculate the square distance (x17) bewteen (x3, x4) and (x5, x6) 
+    sub x17, x3, x5    // (x3-x5)
+    mul x17, x17, x17  // (x3-x5)²
+    sub x9, x4, x6     // (x4-x6)
+    mul x9, x9, x9     // (x4-x6)²
+    add x17, x17, x9   // (x3-x5)² + (x4-x6)² => square distance bewteen (x3, x4) and (x5, x6) 
+
+    // calculate the square distance (x18) bewteen (x3, x4) and (x7, x8)
+    sub x18, x3, x7    // (x3-x7)
+    mul x18, x18, x18  // (x3-x7)²
+    sub x9, x4, x8     // (x4-x8)
+    mul x9, x9, x9     // (x4-x8)²
+    add x18, x18, x9   // (x3-x7)² + (x4-x8)² => square distance bewteen (x3, x4) and (x7, x8)
+
+    // calculate the square distance (x19) bewteen (x5, x6) and (x7, x8)
+    sub x19, x5, x7    // (x5-x7)
+    mul x19, x19, x19  // (x5-x7)²
+    sub x9, x6, x8     // (x6-x8)
+    mul x9, x9, x9     // (x6-x8)²
+    add x19, x19, x9   // (x5-x7)² + (x6-x8)² => square distance bewteen (x5, x6) and (x7, x8)
+
+    // paints the triangle
+    sub x16, x14, x13 // Height of the Squared
+    mov x2, x13
+    loopPC1_triangle:
+        cbz x16, endLoopPC1_triangle
+        mov x1, x11
+        sub x15, x12, x11 // Base of the Squared
+        loopPC0_triangle:
+            cbz x15, endLoopPC0_triangle
+            bl ifPixelInRoundedTrianglePaintIT
+            add x1, x1, 1
+            sub x15, x15, 1
+            b loopPC0_triangle
+    endLoopPC0_triangle:
+        add x2, x2, 1
+        sub x16, x16, 1
+        b loopPC1_triangle
+    endLoopPC1_triangle:
+
+
+    exit_failure:
+    ldur x19,[sp,152]   
+    ldur x18,[sp,144]  
+    ldur x17,[sp,136]  
+    ldur x16,[sp,128]   
+    ldur x15,[sp,120]   
+    ldur x14,[sp,112]   
+    ldur x13,[sp,104]   
+    ldur x12,[sp,96]    
+    ldur x11,[sp,88]    
+    ldur x10,[sp,80]   
+    ldur x9, [sp,72]    
+    ldur x8, [sp,64]   
+    ldur x7, [sp,56]   
+    ldur x6, [sp,48]    
+    ldur x5, [sp,40]    
+    ldur x4, [sp,32]    
+    ldur x3, [sp,24]    
+    ldur x2, [sp,16]
+    ldur x1, [sp,8]
+    ldur lr, [sp]   
+    add sp, sp, 160
+    br lr
+
+paintPlane:
+    // Paints plane centered at (x0, y0) coordenates
+    // (x15, x16) -> Center of the Plane
+    // x17 -> Direction of the Plane:
+    //                             (1) North
+    //                             (2) Northeast
+    //                             (3) East
+    //                             (4) Southeast
+    //                             (5) South
+    //                             (6) Southwest
+    //                             (7) West
+    //                             (8) Northwest
+    //                             (Other) Failure
+    // x18 -> Main Body Colour
+    // x19 -> Wings and Tails Colour
+    //
+    // Disclaimer: The plane will always have the same size
+
+    sub sp, sp, 112
+    stur x19, [sp,104]  // Wings and Tails Colour
+    stur x18, [sp,96]   // Main Body Colour
+    stur x17, [sp,88]   // Direction of the Plane
+    stur x16, [sp,80]   // y0
+    stur x15, [sp,72]   // x0
+    stur x10, [sp,64]   
+    stur x9, [sp,56]   
+    stur x8, [sp,48]    
+    stur x7, [sp,40]    
+    stur x6, [sp,32]    
+    stur x5, [sp,24]    
+    stur x4, [sp,16]
+    stur x3, [sp,8]
+    stur lr, [sp]       // return pointer
+
+    // First we check the Direction of the Plane 
+    cmp x17, 1
+    b.eq North
+    cmp x17, 2
+    b.eq Northeast
+    cmp x17, 3
+    b.eq East
+    cmp x17, 4
+    b.eq Southeast
+    cmp x17, 5
+    b.eq South
+    cmp x17, 6
+    b.eq Southwest
+    cmp x17, 7
+    b.eq West
+    cmp x17, 8
+    b.eq Northwest
+    b end_paint_plane
+
+    ///////////////////////////////////////////////////////////////////////
+    North:
+    // Paint Wings  
+
+    //// Turbines 
+    mov	w3, 62915
+	movk w3, 0x3fc8, lsl 16
+	fmov s3, w3 // s3 = 1.57
+
+    mov x10, x18
+
+    sub x4, x15, 23
+    sub x5, x16, 10
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    add x4, x15, 23
+    sub x5, x16, 10
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    //// First Wing
+    mov x10, x19
+    sub x3, x15, 50  
+    mov x4, x16
+
+    mov x5, x15
+    sub x6, x16, 23
+
+    mov x7, x15
+    add x8, x16, 23
+
+    bl paintRoundedTriangle
+
+    //// Second Wing
+    add x3, x15, 50  
+    mov x4, x16
+
+    mov x5, x15
+    sub x6, x16, 23
+
+    mov x7, x15
+    add x8, x16, 23
+
+    bl paintRoundedTriangle
+
+    // Paint Tail
+
+    //// First Part
+    sub x3, x15, 25
+    add x4, x16, 55
+   
+    sub x5, x15, 10
+    add x6, x16, 20
+
+    add x7, x15, 5 
+    add x8, x16, 50
+
+    bl paintRoundedTriangle
+
+    //// Second Part
+    add x3, x15, 25
+    add x4, x16, 55
+   
+    add x5, x15, 10
+    add x6, x16, 20
+
+    sub x7, x15, 5 
+    add x8, x16, 50
+
+    bl paintRoundedTriangle
+
+    // Paint Plane
+
+    //// Main body
+    mov x10, x18
+    mov	w3, 62915
+	movk w3, 0x3fc8, lsl 16
+	fmov s3, w3 // s3 = 1.57
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane  
+    mov x3, x15
+    sub x4, x16, 61
+    
+    sub x5, x15, 10
+    sub x6, x16, 41
+
+    add x7, x15, 10
+    sub x8, x16, 41
+
+    bl paintRoundedTriangle
+
+    //// WindShield
+    movz x10, 0x6b, lsl 16
+    movk x10, 0xade3, lsl 0
+
+    mov x4, x15
+    sub x5, x16, 10
+
+    mov x6, 20
+    mov x7, 10
+
+    bl paintEllipse 
+
+    b end_paint_plane
+
+    ///////////////////////////////////////////////////////////////////////
+    Northeast:
+    // Paint Wings  
+
+    //// Turbines
+    mov	w3, 26214
+	movk w3, 0x3f66, lsl 16
+	fmov s3, w3 // s3 = -0.8
+
+    mov x10, x18
+
+    sub x4, x15, 12
+    sub x5, x16, 27
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    add x4, x15, 27
+    add x5, x16, 7
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    //// First Wing
+    mov x10, x19
+
+    sub x3, x15, 60
+    sub x4, x16, 46
+
+    sub x5, x15, 22
+    add x6, x16, 12
+
+    add x7, x15, 12
+    sub x8, x16, 22
+
+    bl paintRoundedTriangle
+
+    //// Second Wing
+    add x3, x15, 60
+    add x4, x16, 46
+
+    add x5, x15, 22
+    sub x6, x16, 12
+
+    sub x7, x15, 12
+    add x8, x16, 22
+
+    bl paintRoundedTriangle
+
+    // Paint Tail
+
+    //// First Part
+    sub x3, x15, 44
+    add x4, x16, 10
+   
+    sub x5, x15, 12
+    add x6, x16, 24
+
+    sub x7, x15, 39
+    add x8, x16, 39
+
+    bl paintRoundedTriangle
+
+    //// Second Part
+    sub x3, x15, 3
+    add x4, x16, 51
+   
+    sub x5, x15, 17
+    add x6, x16, 19
+
+    sub x7, x15, 32
+    add x8, x16, 46
+
+    bl paintRoundedTriangle
+
+    // Paint Plane
+
+    //// Main body
+    mov x10, x18
+    mov	w3, 26214
+	movk w3, 0x3f66, lsl 16
+	fmov s3, w3 // s3 = -0.8
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane 
+    add x3, x15, 43
+    sub x4, x16, 52
+    
+    add x5, x15, 5
+    sub x6, x16, 47
+
+    add x7, x15, 48
+    sub x8, x16, 9
+
+    bl paintRoundedTriangle
+
+    //// WindShield
+    movz x10, 0x6b, lsl 16
+    movk x10, 0xade3, lsl 0
+
+    add x4, x15, 8
+    sub x5, x16, 10
+
+    mov x6, 20
+    mov x7, 10
+
+    bl paintEllipse 
+
+    b end_paint_plane
+
+    ///////////////////////////////////////////////////////////////////////
+    East:
+    // Paint Wings  
+
+    //// Turbines 
+    mov	w3, 0
+	fmov s3, w3 // s3 = 0
+
+    mov x10, x18
+
+    add x4, x15, 10
+    sub x5, x16, 23
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    add x4, x15, 10
+    add x5, x16, 23
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    //// First Wing
+    mov x10, x19
+    mov x3, x15 
+    sub x4, x16, 50
+
+    sub x5, x15, 23
+    mov x6, x16
+
+    add x7, x15, 23
+    mov x8, x16
+
+    bl paintRoundedTriangle
+
+    //// Second Wing
+    mov x3, x15  
+    add x4, x16, 50
+
+    sub x5, x15, 23
+    mov x6, x16
+
+    add x7, x15, 23
+    mov x8, x16
+
+    bl paintRoundedTriangle
+
+    // Paint Tail
+
+    //// First Part
+    sub x3, x15, 55
+    sub x4, x16, 25
+   
+    sub x5, x15, 20
+    sub x6, x16, 10
+
+    sub x7, x15, 50
+    add x8, x16, 5 
+
+    bl paintRoundedTriangle
+
+    //// Second Part
+    sub x3, x15, 55
+    add x4, x16, 25
+   
+    sub x5, x15, 20
+    add x6, x16, 10
+
+    sub x7, x15, 50
+    sub x8, x16, 5 
+
+    bl paintRoundedTriangle
+
+    // Paint Plane
+
+    //// Main body
+    mov x10, x18
+    mov	w3, 0
+	fmov s3, w3 // s3 = 0
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane  
+    add x3, x15, 61
+    mov x4, x16
+    
+    add x5, x15, 41
+    sub x6, x16, 10
+
+    add x7, x15, 41
+    add x8, x16, 10
+
+    bl paintRoundedTriangle
+
+    //// WindShield
+    movz x10, 0x6b, lsl 16
+    movk x10, 0xade3, lsl 0
+
+    add x4, x15, 10
+    mov x5, x16
+
+    mov x6, 20
+    mov x7, 10
+
+    bl paintEllipse 
+
+    b end_paint_plane
+ 
+    ///////////////////////////////////////////////////////////////////////
+    Southeast:
+    // Paint Wings  
+
+    //// Turbines
+    mov	w3, 52429
+	movk w3, 0x400c, lsl 16
+	fmov s3, w3 // s3 = 0.8
+
+    mov x10, x18
+
+    sub x4, x15, 12
+    add x5, x16, 27
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    add x4, x15, 27
+    sub x5, x16, 7
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    //// First Wing
+    mov x10, x19
+
+    add x3, x15, 60
+    sub x4, x16, 46
+
+    add x5, x15, 22
+    add x6, x16, 12
+
+    sub x7, x15, 12
+    sub x8, x16, 22
+
+    bl paintRoundedTriangle
+
+    //// Second Wing
+    sub x3, x15, 60
+    add x4, x16, 46
+
+    sub x5, x15, 22
+    sub x6, x16, 12
+
+    add x7, x15, 12
+    add x8, x16, 22
+
+    bl paintRoundedTriangle
+
+    // Paint Tail
+
+    //// First Part
+    sub x3, x15, 44
+    sub x4, x16, 10
+   
+    sub x5, x15, 12
+    sub x6, x16, 24
+
+    sub x7, x15, 39
+    sub x8, x16, 39
+
+    bl paintRoundedTriangle
+
+    //// Second Part
+    sub x3, x15, 3
+    sub x4, x16, 51
+   
+    sub x5, x15, 17
+    sub x6, x16, 19
+
+    sub x7, x15, 32
+    sub x8, x16, 46
+
+    bl paintRoundedTriangle
+
+    // Paint Plane
+
+    //// Main body
+    mov x10, x18
+    mov	w3, 52429
+	movk w3, 0x400c, lsl 16
+	fmov s3, w3 // s3 = 0.8
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane 
+    add x3, x15, 43
+    add x4, x16, 55
+    
+    add x5, x15, 5
+    add x6, x16, 50
+
+    add x7, x15, 48
+    add x8, x16, 12
+
+    bl paintRoundedTriangle
+
+    //// WindShield
+    movz x10, 0x6b, lsl 16
+    movk x10, 0xade3, lsl 0
+
+    add x4, x15, 8
+    add x5, x16, 10
+
+    mov x6, 20
+    mov x7, 10
+
+    bl paintEllipse 
+
+    b end_paint_plane
+
+    ///////////////////////////////////////////////////////////////////////
+    South:
+    // Paint Wings  
+
+    //// Turbines 
+    mov	w3, 62915
+	movk w3, 0x3fc8, lsl 16
+	fmov s3, w3 // s3 = 1.57
+
+    mov x10, x18
+
+    sub x4, x15, 23
+    add x5, x16, 10
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    add x4, x15, 23
+    add x5, x16, 10
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    //// First Wing
+    mov x10, x19
+    sub x3, x15, 50  
+    mov x4, x16
+
+    mov x5, x15
+    sub x6, x16, 23
+
+    mov x7, x15
+    add x8, x16, 23
+
+    bl paintRoundedTriangle
+
+    //// Second Wing
+    add x3, x15, 50  
+    mov x4, x16
+
+    mov x5, x15
+    sub x6, x16, 23
+
+    mov x7, x15
+    add x8, x16, 23
+
+    bl paintRoundedTriangle
+
+    // Paint Tail
+
+    //// First Part
+    sub x3, x15, 25
+    sub x4, x16, 55
+   
+    sub x5, x15, 10
+    sub x6, x16, 20
+
+    add x7, x15, 5 
+    sub x8, x16, 50
+
+    bl paintRoundedTriangle
+
+    //// Second Part
+    add x3, x15, 25
+    sub x4, x16, 55
+   
+    add x5, x15, 10
+    sub x6, x16, 20
+
+    sub x7, x15, 5 
+    sub x8, x16, 50
+
+    bl paintRoundedTriangle
+
+    // Paint Plane
+
+    //// Main body
+    mov x10, x18
+    mov	w3, 62915
+	movk w3, 0x3fc8, lsl 16
+	fmov s3, w3 // s3 = 1.57
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane  
+    mov x3, x15
+    add x4, x16, 61
+    
+    sub x5, x15, 10
+    add x6, x16, 41
+
+    add x7, x15, 10
+    add x8, x16, 41
+
+    bl paintRoundedTriangle
+
+    //// WindShield
+    movz x10, 0x6b, lsl 16
+    movk x10, 0xade3, lsl 0
+
+    mov x4, x15
+    add x5, x16, 10
+
+    mov x6, 20
+    mov x7, 10
+
+    bl paintEllipse 
+
+    b end_paint_plane
+
+    ///////////////////////////////////////////////////////////////////////
+    Southwest:
+    // Paint Wings  
+
+    //// Turbines
+    mov	w3, 26214
+	movk w3, 0x3f66, lsl 16
+	fmov s3, w3 // s3 = -0.8
+
+    mov x10, x18
+
+    add x4, x15, 12
+    add x5, x16, 27
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    sub x4, x15, 27
+    sub x5, x16, 7
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    //// First Wing
+    mov x10, x19
+
+    sub x3, x15, 60
+    sub x4, x16, 46
+
+    sub x5, x15, 22
+    add x6, x16, 12
+
+    add x7, x15, 12
+    sub x8, x16, 22
+
+    bl paintRoundedTriangle
+
+    //// Second Wing
+    add x3, x15, 60
+    add x4, x16, 46
+
+    add x5, x15, 22
+    sub x6, x16, 12
+
+    sub x7, x15, 12
+    add x8, x16, 22
+
+    bl paintRoundedTriangle
+
+    // Paint Tail
+
+    //// First Part
+    add x3, x15, 44
+    sub x4, x16, 10
+   
+    add x5, x15, 12
+    sub x6, x16, 24
+
+    add x7, x15, 39
+    sub x8, x16, 39
+
+    bl paintRoundedTriangle
+
+    //// Second Part
+    add x3, x15, 3
+    sub x4, x16, 51
+   
+    add x5, x15, 17
+    sub x6, x16, 19
+
+    add x7, x15, 32
+    sub x8, x16, 46
+
+    bl paintRoundedTriangle
+
+    // Paint Plane
+
+    //// Main body
+    mov x10, x18
+    mov	w3, 26214
+	movk w3, 0x3f66, lsl 16
+	fmov s3, w3 // s3 = -0.8
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane 
+    sub x3, x15, 43
+    add x4, x16, 52
+    
+    sub x5, x15, 5
+    add x6, x16, 47
+
+    sub x7, x15, 48
+    add x8, x16, 9
+
+    bl paintRoundedTriangle
+
+    //// WindShield
+    movz x10, 0x6b, lsl 16
+    movk x10, 0xade3, lsl 0
+
+    sub x4, x15, 8
+    add x5, x16, 10
+
+    mov x6, 20
+    mov x7, 10
+
+    bl paintEllipse 
+
+    b end_paint_plane
+
+    ///////////////////////////////////////////////////////////////////////
+    West:
+    // Paint Wings  
+
+    //// Turbines 
+    mov	w3, 0
+	fmov s3, w3 // s3 = 0
+
+    mov x10, x18
+
+    sub x4, x15, 10
+    sub x5, x16, 23
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    sub x4, x15, 10
+    add x5, x16, 23
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    //// First Wing
+    mov x10, x19
+    mov x3, x15 
+    sub x4, x16, 50
+
+    sub x5, x15, 23
+    mov x6, x16
+
+    add x7, x15, 23
+    mov x8, x16
+
+    bl paintRoundedTriangle
+
+    //// Second Wing
+    mov x3, x15  
+    add x4, x16, 50
+
+    sub x5, x15, 23
+    mov x6, x16
+
+    add x7, x15, 23
+    mov x8, x16
+
+    bl paintRoundedTriangle
+
+    // Paint Tail
+
+    //// First Part
+    add x3, x15, 55
+    sub x4, x16, 25
+   
+    add x5, x15, 20
+    sub x6, x16, 10
+
+    add x7, x15, 50
+    add x8, x16, 5 
+
+    bl paintRoundedTriangle
+
+    //// Second Part
+    add x3, x15, 55
+    add x4, x16, 25
+   
+    add x5, x15, 20
+    add x6, x16, 10
+
+    add x7, x15, 50
+    sub x8, x16, 5 
+
+    bl paintRoundedTriangle
+
+    // Paint Plane
+
+    //// Main body
+    mov x10, x18
+    mov	w3, 0
+	fmov s3, w3 // s3 = 0
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane  
+    sub x3, x15, 61
+    mov x4, x16
+    
+    sub x5, x15, 41
+    sub x6, x16, 10
+
+    sub x7, x15, 41
+    add x8, x16, 10
+
+    bl paintRoundedTriangle
+
+    //// WindShield
+    movz x10, 0x6b, lsl 16
+    movk x10, 0xade3, lsl 0
+
+    sub x4, x15, 10
+    mov x5, x16
+
+    mov x6, 20
+    mov x7, 10
+
+    bl paintEllipse 
+
+    b end_paint_plane
+
+    ///////////////////////////////////////////////////////////////////////
+    Northwest:
+    // Paint Wings  
+
+    //// Turbines
+    mov	w3, 52429
+	movk w3, 0x400c, lsl 16
+	fmov s3, w3 // s3 = 0.8
+
+    mov x10, x18
+
+    sub x4, x15, 27
+    add x5, x16, 2
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    add x4, x15, 10
+    sub x5, x16, 27
+
+    mov x6, 20
+    mov x7, 7
+
+    bl paintEllipse 
+
+    //// First Wing
+    mov x10, x19
+
+    add x3, x15, 60
+    sub x4, x16, 46
+
+    add x5, x15, 22
+    add x6, x16, 12
+
+    sub x7, x15, 12
+    sub x8, x16, 22
+
+    bl paintRoundedTriangle
+
+    //// Second Wing
+    sub x3, x15, 60
+    add x4, x16, 46
+
+    sub x5, x15, 22
+    sub x6, x16, 12
+
+    add x7, x15, 12
+    add x8, x16, 22
+
+    bl paintRoundedTriangle
+
+    // Paint Tail
+
+    //// First Part
+    add x3, x15, 44
+    add x4, x16, 10
+   
+    add x5, x15, 12
+    add x6, x16, 24
+
+    add x7, x15, 39
+    add x8, x16, 39
+
+    bl paintRoundedTriangle
+
+    //// Second Part
+    add x3, x15, 3
+    add x4, x16, 51
+   
+    add x5, x15, 17
+    add x6, x16, 19
+
+    add x7, x15, 32
+    add x8, x16, 46
+
+    bl paintRoundedTriangle
+
+    // Paint Plane
+
+    //// Main body
+    mov x10, x18
+    mov	w3, 52429
+	movk w3, 0x400c, lsl 16
+	fmov s3, w3 // s3 = 0.8
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane 
+    sub x3, x15, 43
+    sub x4, x16, 55
+    
+    sub x5, x15, 5
+    sub x6, x16, 50
+
+    sub x7, x15, 48
+    sub x8, x16, 12
+
+    bl paintRoundedTriangle
+
+    //// WindShield
+    movz x10, 0x6b, lsl 16
+    movk x10, 0xade3, lsl 0
+
+    sub x4, x15, 8
+    sub x5, x16, 10
+
+    mov x6, 20
+    mov x7, 10
+
+    bl paintEllipse 
+
+    end_paint_plane:
+    
+    ldur x19, [sp,104]
+    ldur x18, [sp,96]
+    ldur x17, [sp,88]
+    ldur x16, [sp,80]   
+    ldur x15, [sp,72]   
+    ldur x10, [sp,64]   
+    ldur x9, [sp,56]   
+    ldur x8, [sp,48]    
+    ldur x7, [sp,40]    
+    ldur x6, [sp,32]    
+    ldur x5, [sp,24]    
+    ldur x4, [sp,16]
+    ldur x3, [sp,8]
+    ldur lr, [sp]    
+    add sp, sp, 112
+    ret
+
+paintMissile:
+ // Paints a Missile centered at (x0, y0) coordenates
+    // (x15, x16) -> Center of the Missile
+    // x17 -> Direction of the Missile:
+    //                             (1) North
+    //                             (2) Northeast
+    //                             (3) East
+    //                             (4) Southeast
+    //                             (5) South
+    //                             (6) Southwest
+    //                             (7) West
+    //                             (8) Northwest
+    //                             (Other) Failure
+    // x10 -> Colour
+    //
+    // Disclaimer: The Missile will always have the same size
+
+    sub sp, sp, 104
+    stur x18, [sp,96]   // Colour
+    stur x17, [sp,88]   // Direction of the Missile
+    stur x16, [sp,80]   // y0
+    stur x15, [sp,72]   // x0
+    stur x10, [sp,64]   
+    stur x9, [sp,56]   
+    stur x8, [sp,48]    
+    stur x7, [sp,40]    
+    stur x6, [sp,32]    
+    stur x5, [sp,24]    
+    stur x4, [sp,16]
+    stur x3, [sp,8]
+    stur lr, [sp]       // return pointer
+
+    // First we check the Direction of the Missile 
+    cmp x17, 1
+    b.eq North_m
+    cmp x17, 2
+    b.eq Northeast_m
+    cmp x17, 3
+    b.eq East_m
+    cmp x17, 4
+    b.eq Southeast_m
+    cmp x17, 5
+    b.eq South_m
+    cmp x17, 6
+    b.eq Southwest_m
+    cmp x17, 7
+    b.eq West_m
+    cmp x17, 8
+    b.eq Northwest_m
+    b end_paint_missile
+
+    ///////////////////////////////////////////////////////////////////////
+    North_m:
+    // Main body
+    mov	w3, 62915
+	movk w3, 0x3fc8, lsl 16
+	fmov s3, w3 // s3 = 1.57
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 22
+    mov x7, 10
+
+    bl paintEllipse
+
+    // Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+    mov x4, x15
+    add x5, x16, 33
+
+    mov x6, 10
+    mov x7, 5
+
+    bl paintEllipse
+
+    // Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    mov x4, x15
+    add x5, x16, 28
+
+    mov x6, 9
+    mov x7, 5
+
+    bl paintEllipse 
+
+    // Nose of Missile 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+    mov x3, x15
+    sub x4, x16, 28
+    
+    sub x5, x15, 10
+    sub x6, x16, 8
+
+    add x7, x15, 10
+    sub x8, x16, 8
+
+    bl paintRoundedTriangle 
+     ldur x10, [sp,64]
+
+    // Back of Missile 
+
+    mov x3, x15
+    add x4, x16, 12
+    
+    sub x5, x15, 10
+    add x6, x16, 32
+
+    add x7, x15, 10
+    add x8, x16, 32
+
+    bl paintRoundedTriangle 
+
+
+    b end_paint_missile
+
+    ///////////////////////////////////////////////////////////////////////
+    Northeast_m:
+    mov	w3, 26214
+	movk w3, 0x3f66, lsl 16
+	fmov s3, w3 // s3 = -0.8
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane 
+    add x3, x15, 43
+    sub x4, x16, 52
+    
+    add x5, x15, 5
+    sub x6, x16, 47
+
+    add x7, x15, 48
+    sub x8, x16, 9
+
+    bl paintRoundedTriangle
+
+    b end_paint_missile
+
+    ///////////////////////////////////////////////////////////////////////
+    East_m:
+    mov	w3, 0
+	fmov s3, w3 // s3 = 0
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane  
+    add x3, x15, 61
+    mov x4, x16
+    
+    add x5, x15, 41
+    sub x6, x16, 10
+
+    add x7, x15, 41
+    add x8, x16, 10
+
+    bl paintRoundedTriangle
+
+    b end_paint_missile
+ 
+    ///////////////////////////////////////////////////////////////////////
+    Southeast_m:
+    mov	w3, 52429
+	movk w3, 0x400c, lsl 16
+	fmov s3, w3 // s3 = 0.8
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane 
+    add x3, x15, 43
+    add x4, x16, 55
+    
+    add x5, x15, 5
+    add x6, x16, 50
+
+    add x7, x15, 48
+    add x8, x16, 12
+
+    bl paintRoundedTriangle
+
+    b end_paint_missile
+
+    ///////////////////////////////////////////////////////////////////////
+    South_m:
+    mov	w3, 62915
+	movk w3, 0x3fc8, lsl 16
+	fmov s3, w3 // s3 = 1.57
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane  
+    mov x3, x15
+    add x4, x16, 61
+    
+    sub x5, x15, 10
+    add x6, x16, 41
+
+    add x7, x15, 10
+    add x8, x16, 41
+
+    bl paintRoundedTriangle
+
+    b end_paint_missile
+
+    ///////////////////////////////////////////////////////////////////////
+    Southwest_m:
+    mov	w3, 26214
+	movk w3, 0x3f66, lsl 16
+	fmov s3, w3 // s3 = -0.8
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane 
+    sub x3, x15, 43
+    add x4, x16, 52
+    
+    sub x5, x15, 5
+    add x6, x16, 47
+
+    sub x7, x15, 48
+    add x8, x16, 9
+
+    bl paintRoundedTriangle
+
+    b end_paint_missile
+
+    ///////////////////////////////////////////////////////////////////////
+    West_m:
+    mov	w3, 0
+	fmov s3, w3 // s3 = 0
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane  
+    sub x3, x15, 61
+    mov x4, x16
+    
+    sub x5, x15, 41
+    sub x6, x16, 10
+
+    sub x7, x15, 41
+    add x8, x16, 10
+
+    bl paintRoundedTriangle
+
+    b end_paint_missile
+
+    ///////////////////////////////////////////////////////////////////////
+    Northwest_m:
+    mov	w3, 52429
+	movk w3, 0x400c, lsl 16
+	fmov s3, w3 // s3 = 0.8
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 55
+    mov x7, 15
+
+    bl paintEllipse 
+
+    //// Nose of Plane 
+    sub x3, x15, 43
+    sub x4, x16, 55
+    
+    sub x5, x15, 5
+    sub x6, x16, 50
+
+    sub x7, x15, 48
+    sub x8, x16, 12
+
+    bl paintRoundedTriangle
+
+    end_paint_missile:
+    
+    ldur x19, [sp,104]
+    ldur x18, [sp,96]
+    ldur x17, [sp,88]
+    ldur x16, [sp,80]   
+    ldur x15, [sp,72]   
+    ldur x10, [sp,64]   
+    ldur x9, [sp,56]   
+    ldur x8, [sp,48]    
+    ldur x7, [sp,40]    
+    ldur x6, [sp,32]    
+    ldur x5, [sp,24]    
+    ldur x4, [sp,16]
+    ldur x3, [sp,8]
+    ldur lr, [sp]    
+    add sp, sp, 112
+    ret
+
 
 .endif
