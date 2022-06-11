@@ -111,8 +111,7 @@ drawScreen: // done
 
     // DISPLAY
     // Display color
-    movz x10, 0x90, lsl 16
-    movk x10, 0x9A3E, lsl 0
+    mov x10, xzr
 
     ldur x1, [sp,80]    // x coordinate
     ldur x2, [sp,72]    // y coordinate
@@ -242,7 +241,7 @@ drawCartridge: // done
     //------------------
 
 
-drawButtons: // incomplete
+drawButtons: // done
     //------------------
     sub sp, sp, 80      // reserve memory in the stack
     stur x7, [sp,72]    // temp
