@@ -3,36 +3,11 @@
 // Kurtz, Lara
 // Rodriguez, Lautaro
 
-.include "gameboy.s"
+.include "utils.s"
 
 .globl main
 
-.equ SCREEN_PIXELS_div_2_menos_1, SCREEN_PIXELS/2 - 1
-screen_pixels_div_2_menos_1: .dword SCREEN_PIXELS_div_2_menos_1 // Último indice tomando los elementos como dword
-actualizarFrameBuffer:
 
-		sub sp, sp, 32 
-		stur x11,[sp,24]
-		stur x10,[sp,16]
-		stur x9, [sp,8]
-		stur lr, [sp]
-
-        ldr x9, dir_frameBuffer
-        ldr x10, screen_pixels_div_2_menos_1
-    loop_actualizarFrameBuffer:
-        cmp x10, #0
-        b.lt end_loop_actualizarFrameBuffer
-        ldr x11, [x0, x10, lsl #3] // Voy copiando los colores de a 2
-        str x11, [x9, x10, lsl #3]
-        sub x10, x10, #1
-        b loop_actualizarFrameBuffer
-    end_loop_actualizarFrameBuffer:
-		ldur x11,[sp,24]
-		ldur x10,[sp,16]
-		ldur x9, [sp,8]
-		ldur lr, [sp]
-		add sp, sp, 32 
-		br lr // return
 
 
 main:
@@ -164,8 +139,8 @@ endZoomIn:
 
 	sub x2, x2, 1
 
-	movz x10, 0x90, lsl 16
-    movk x10, 0x9A3E, lsl 0
+	movz x10, 0xd6, lsl 16
+    movk x10, 0xffff, lsl 0
 	
 	// calculates display width
     add x5, x5, x5       // doubles the horizontal margin
@@ -176,6 +151,8 @@ endZoomIn:
     sub x4, x4, x6      // substracts it from border height
 	
 	bl paintRectangle
-	bl actualizarFrameBuffer
+	bl actualizarFrameBuffer	
+	
+
 
 infloop: b infloop
