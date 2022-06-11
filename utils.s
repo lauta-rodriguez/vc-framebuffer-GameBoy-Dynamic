@@ -118,8 +118,8 @@ paintRectangle:
 
     loop1:
         cbz x9, loop1End                    // if height==0 or finished painting the rectangle, exits
-        cmp x2, SCREEN_HEIGH                // y_coord - SCREEN_HEIGH ≥ 0 ?
-        b.ge loop1End                       // we exceeded the boundaries of the framebuffer, exits
+        //cmp x2, SCREEN_HEIGH                // y_coord - SCREEN_HEIGH ≥ 0 ?
+        //b.ge loop1End                       // we exceeded the boundaries of the framebuffer, exits
         ldur x1, [sp, 32]
         mov x8, x3                         // saves base in the temp register x9     
         loop0:

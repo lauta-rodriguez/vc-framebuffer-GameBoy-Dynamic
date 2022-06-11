@@ -42,6 +42,7 @@ main:
 	ldr x0, =bufferSecundario // Pongo en x0 la dirección base del buffer secundario
 
 	//---------------- CODE HERE ------------------------------------
+
 	bl drawWindow
 
   	// FLOOR
@@ -75,13 +76,13 @@ main:
     //Inicializo los registros
     mov x1, xzr		// gameboy display x coordinate
     mov x2, xzr		// gameboy display y coordinate
-// 	mov x3, xzr		// 
-//  mov x4, xzr		// 
-//	mov x13, xzr	// temp
-//  mov x14, xzr	// temp
+	mov x3, xzr		// 
+	mov x4, xzr		// 
+	mov x13, xzr	// temp
+	mov x14, xzr	// temp
 
 	// Parámetros del frame del display del gameboy ("del" combo x3) 
-	mov x3, 140		// width
+	mov x3, 160		// width
 	mov x4, 100		// height
     mov x13, SCREEN_WIDTH // framebuffer width
     mov x14, SCREEN_HEIGH // framebuffer height 
@@ -101,26 +102,12 @@ main:
 	// smoothly move the gameboy upwards 10 pixels and thennn
 	// zoom in 
 	sub x2, x2, 10
-	
-
-	// Todo se calcula en función de las coordenadas del top-left
-	// corner del borde de la pantalla (x1, x2) y las dimensiones
-	// del borde (x3, x4) que es el cuadrado que incluye al display
-
-	// Para aumentar el tamaño del gameboy modificar (x3, x4)
-	// Se va a centrar todo en función de ese rectángulo
-
-	// Para hacer el zoom in quitar el offset y cambiar (x3, x4)
-	// a (640,480)    
-
-	// Parámetros del frame del display del gameboy ("del" combo x3) 
-	mov x3, 160		// width
-	mov x4, 100		// height
+	//----------------------GAMEBOY END-------------------------
 
 zoomIn:
 
-	cmp x4, 480
-	b.gt endZoomIn
+	cmp x4, 472
+	b.ge endZoomIn
 
 	//Inicializo los registros
     mov x1, xzr		// gameboy display x coordinate
@@ -161,4 +148,12 @@ zoomIn:
 	b zoomIn
 
 	
-endZoomIn: b endZoomIn
+endZoomIn: 
+
+	movz x10, 0xFF, lsl 16 
+	mov x3, 30
+	mov x4, 40
+	bl paintRectangle
+	bl actualizarFrameBuffer
+
+infloop: b infloop
