@@ -1685,7 +1685,30 @@ paintPlane:
 
     // Paint Tail
 
+    //// Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+    mov x4, x15
+    add x5, x16, 55
+
+    mov x6, 12
+    mov x7, 7
+
+    bl paintEllipse
+
+    //// Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    mov x4, x15
+    add x5, x16, 53
+
+    mov x6, 9
+    mov x7, 4
+
+    bl paintEllipse
+
     //// First Part
+    mov x10, x19
     sub x3, x15, 25
     add x4, x16, 55
    
@@ -1806,7 +1829,31 @@ paintPlane:
 
     // Paint Tail
 
+    //// Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+
+    sub x4, x15, 35
+    add x5, x16, 43
+
+    mov x6, 12
+    mov x7, 7
+
+    bl paintEllipse
+
+    //// Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    sub x4, x15, 34
+    add x5, x16, 41
+
+    mov x6, 10
+    mov x7, 4
+
+    bl paintEllipse 
+
     //// First Part
+    mov x10, x19
     sub x3, x15, 44
     add x4, x16, 10
    
@@ -1925,7 +1972,30 @@ paintPlane:
 
     // Paint Tail
 
+    //// Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+    sub x4, x15, 55
+    mov x5, x16
+
+    mov x6, 12
+    mov x7, 7
+
+    bl paintEllipse
+
+    //// Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    sub x4, x15, 53
+    mov x5, x16
+
+    mov x6, 9
+    mov x7, 4
+
+    bl paintEllipse 
+
     //// First Part
+    mov x10, x19
     sub x3, x15, 55
     sub x4, x16, 25
    
@@ -2045,7 +2115,31 @@ paintPlane:
 
     // Paint Tail
 
+    //// Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+
+    sub x4, x15, 35
+    sub x5, x16, 45
+
+    mov x6, 12
+    mov x7, 7
+
+    bl paintEllipse
+
+    //// Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    sub x4, x15, 33
+    sub x5, x16, 42
+
+    mov x6, 10
+    mov x7, 4
+
+    bl paintEllipse
+
     //// First Part
+    mov x10, x19
     sub x3, x15, 44
     sub x4, x16, 10
    
@@ -2165,7 +2259,30 @@ paintPlane:
 
     // Paint Tail
 
+    //// Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+    mov x4, x15
+    sub x5, x16, 55
+
+    mov x6, 12
+    mov x7, 7
+
+    bl paintEllipse
+
+    //// Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    mov x4, x15
+    sub x5, x16, 53
+
+    mov x6, 9
+    mov x7, 4
+
+    bl paintEllipse
+
     //// First Part
+    mov x10, x19
     sub x3, x15, 25
     sub x4, x16, 55
    
@@ -2286,7 +2403,31 @@ paintPlane:
 
     // Paint Tail
 
+    //// Red Fire
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+
+    add x4, x15, 35
+    sub x5, x16, 45
+
+    mov x6, 12
+    mov x7, 7
+
+    bl paintEllipse
+
+    //// Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    add x4, x15, 33
+    sub x5, x16, 42
+
+    mov x6, 10
+    mov x7, 4
+
+    bl paintEllipse
+
     //// First Part
+    mov x10, x19
     add x3, x15, 44
     sub x4, x16, 10
    
@@ -2405,7 +2546,30 @@ paintPlane:
 
     // Paint Tail
 
+    //// Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+    add x4, x15, 55
+    mov x5, x16
+
+    mov x6, 12
+    mov x7, 7
+
+    bl paintEllipse
+
+    //// Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    add x4, x15, 53
+    mov x5, x16
+
+    mov x6, 9
+    mov x7, 4
+
+    bl paintEllipse 
+
     //// First Part
+    mov x10, x19
     add x3, x15, 55
     sub x4, x16, 25
    
@@ -2525,7 +2689,31 @@ paintPlane:
 
     // Paint Tail
 
+    //// Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+
+    add x4, x15, 32
+    add x5, x16, 43
+
+    mov x6, 12
+    mov x7, 7
+
+    bl paintEllipse
+
+    //// Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    add x4, x15, 30
+    add x5, x16, 40
+
+    mov x6, 10
+    mov x7, 4
+
+    bl paintEllipse 
+
     //// First Part
+    mov x10, x19
     add x3, x15, 44
     add x4, x16, 10
    
@@ -2609,7 +2797,7 @@ paintPlane:
     ret
 
 paintMissile:
- // Paints a Missile centered at (x0, y0) coordenates
+    // Paints a Missile centered at (x0, y0) coordenates
     // (x15, x16) -> Center of the Missile
     // x17 -> Direction of the Missile:
     //                             (1) North
@@ -2659,9 +2847,10 @@ paintMissile:
     b.eq Northwest_m
     b end_paint_missile
 
+
     ///////////////////////////////////////////////////////////////////////
     North_m:
-    // Main body
+    // Main Body
     mov	w3, 62915
 	movk w3, 0x3fc8, lsl 16
 	fmov s3, w3 // s3 = 1.57
@@ -2692,13 +2881,12 @@ paintMissile:
     add x5, x16, 28
 
     mov x6, 9
-    mov x7, 5
+    mov x7, 4
 
     bl paintEllipse 
 
     // Nose of Missile 
-    movz x10, 0xe6, lsl 16
-	movk x10, 0x1710, lsl 0
+    ldur x10, [sp,64]
     mov x3, x15
     sub x4, x16, 28
     
@@ -2709,10 +2897,8 @@ paintMissile:
     sub x8, x16, 8
 
     bl paintRoundedTriangle 
-     ldur x10, [sp,64]
 
     // Back of Missile 
-
     mov x3, x15
     add x4, x16, 12
     
@@ -2724,11 +2910,12 @@ paintMissile:
 
     bl paintRoundedTriangle 
 
-
     b end_paint_missile
+
 
     ///////////////////////////////////////////////////////////////////////
     Northeast_m:
+    // Main Body
     mov	w3, 26214
 	movk w3, 0x3f66, lsl 16
 	fmov s3, w3 // s3 = -0.8
@@ -2736,54 +2923,127 @@ paintMissile:
     mov x4, x15
     mov x5, x16
 
-    mov x6, 55
-    mov x7, 15
+    mov x6, 22
+    mov x7, 9
+
+    bl paintEllipse
+
+    // Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+
+    sub x4, x15, 20
+    add x5, x16, 25
+
+    mov x6, 10
+    mov x7, 5
+
+    bl paintEllipse
+
+    // Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    sub x4, x15, 18
+    add x5, x16, 22
+
+    mov x6, 9
+    mov x7, 4
 
     bl paintEllipse 
 
-    //// Nose of Plane 
-    add x3, x15, 43
-    sub x4, x16, 52
+    // Nose of Missile
+    ldur x10, [sp,64]
+    add x3, x15, 20
+    sub x4, x16, 27
     
-    add x5, x15, 5
-    sub x6, x16, 47
+    sub x5, x15, 11
+    sub x6, x16, 18
 
-    add x7, x15, 48
-    sub x8, x16, 9
+    add x7, x15, 28
+    add x8, x16, 16
+
+    // Back of Missile
+    sub x3, x15, 7
+    add x4, x16, 5
+    
+    sub x5, x15, 28
+    add x6, x16, 14
+
+    add x7, x15, 1
+    add x8, x16, 38
 
     bl paintRoundedTriangle
 
     b end_paint_missile
 
+
     ///////////////////////////////////////////////////////////////////////
     East_m:
+    // Main Body
     mov	w3, 0
 	fmov s3, w3 // s3 = 0
 
     mov x4, x15
     mov x5, x16
 
-    mov x6, 55
-    mov x7, 15
+    mov x6, 22
+    mov x7, 10
+
+    bl paintEllipse
+
+    // Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+    sub x4, x15, 33
+    mov x5, x16
+
+    mov x6, 10
+    mov x7, 5
+
+    bl paintEllipse
+
+    // Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    sub x4, x15, 28
+    mov x5, x16
+
+    mov x6, 9
+    mov x7, 4
 
     bl paintEllipse 
 
-    //// Nose of Plane  
-    add x3, x15, 61
+    // Nose of Missile
+    ldur x10, [sp, 64]
+    add x3, x15, 30
     mov x4, x16
     
-    add x5, x15, 41
+    add x5, x15, 10
     sub x6, x16, 10
 
-    add x7, x15, 41
+    add x7, x15, 10
+    add x8, x16, 10
+
+    bl paintRoundedTriangle
+
+    // Back of Missile
+    sub x3, x15, 10
+    mov x4, x16
+    
+    sub x5, x15, 30
+    sub x6, x16, 10
+
+    sub x7, x15, 30
     add x8, x16, 10
 
     bl paintRoundedTriangle
 
     b end_paint_missile
+
  
     ///////////////////////////////////////////////////////////////////////
     Southeast_m:
+    // Main Body
     mov	w3, 52429
 	movk w3, 0x400c, lsl 16
 	fmov s3, w3 // s3 = 0.8
@@ -2791,27 +3051,65 @@ paintMissile:
     mov x4, x15
     mov x5, x16
 
-    mov x6, 55
-    mov x7, 15
+    mov x6, 22
+    mov x7, 10
+
+    bl paintEllipse
+
+    // Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+
+    sub x4, x15, 20
+    sub x5, x16, 27
+
+    mov x6, 10
+    mov x7, 5
+
+    bl paintEllipse
+
+    // Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    sub x4, x15, 18
+    sub x5, x16, 24
+
+    mov x6, 9
+    mov x7, 4
 
     bl paintEllipse 
 
-    //// Nose of Plane 
-    add x3, x15, 43
-    add x4, x16, 55
+    // Nose of Missile
+    ldur x10, [sp,64] 
+    add x3, x15, 20
+    add x4, x16, 23
     
-    add x5, x15, 5
-    add x6, x16, 50
+    sub x5, x15, 18
+    add x6, x16, 23
 
-    add x7, x15, 48
-    add x8, x16, 12
+    add x7, x15, 25
+    sub x8, x16, 12
+
+    bl paintRoundedTriangle
+
+    // Back of Missile
+    sub x3, x15, 5
+    sub x4, x16, 4
+    
+    sub x5, x15, 43
+    sub x6, x16, 4
+
+    mov x7, x15
+    sub x8, x16, 29
 
     bl paintRoundedTriangle
 
     b end_paint_missile
 
+
     ///////////////////////////////////////////////////////////////////////
     South_m:
+    // Main Body
     mov	w3, 62915
 	movk w3, 0x3fc8, lsl 16
 	fmov s3, w3 // s3 = 1.57
@@ -2819,27 +3117,64 @@ paintMissile:
     mov x4, x15
     mov x5, x16
 
-    mov x6, 55
-    mov x7, 15
+    mov x6, 22
+    mov x7, 10
+
+    bl paintEllipse
+
+    // Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+    mov x4, x15
+    sub x5, x16, 33
+
+    mov x6, 10
+    mov x7, 5
+
+    bl paintEllipse
+
+    // Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    mov x4, x15
+    sub x5, x16, 28
+
+    mov x6, 9
+    mov x7, 4
 
     bl paintEllipse 
 
-    //// Nose of Plane  
+    // Nose of Missile 
+    ldur x10, [sp,64]
     mov x3, x15
-    add x4, x16, 61
+    add x4, x16, 28
     
     sub x5, x15, 10
-    add x6, x16, 41
+    add x6, x16, 8
 
     add x7, x15, 10
-    add x8, x16, 41
+    add x8, x16, 8
 
-    bl paintRoundedTriangle
+    bl paintRoundedTriangle 
+
+    // Back of Missile 
+    mov x3, x15
+    sub x4, x16, 12
+    
+    sub x5, x15, 10
+    sub x6, x16, 32
+
+    add x7, x15, 10
+    sub x8, x16, 32
+
+    bl paintRoundedTriangle 
 
     b end_paint_missile
 
+
     ///////////////////////////////////////////////////////////////////////
     Southwest_m:
+    // Main Body
     mov	w3, 26214
 	movk w3, 0x3f66, lsl 16
 	fmov s3, w3 // s3 = -0.8
@@ -2847,54 +3182,127 @@ paintMissile:
     mov x4, x15
     mov x5, x16
 
-    mov x6, 55
-    mov x7, 15
+    mov x6, 22
+    mov x7, 9
+
+    bl paintEllipse
+
+    // Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+
+    add x4, x15, 18
+    sub x5, x16, 25
+
+    mov x6, 10
+    mov x7, 5
+
+    bl paintEllipse
+
+    // Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    add x4, x15, 16
+    sub x5, x16, 22
+
+    mov x6, 9
+    mov x7, 4
 
     bl paintEllipse 
 
-    //// Nose of Plane 
-    sub x3, x15, 43
-    add x4, x16, 52
+    // Nose of Missile
+    ldur x10, [sp,64]
+    sub x3, x15, 20
+    add x4, x16, 27
     
-    sub x5, x15, 5
-    add x6, x16, 47
+    add x5, x15, 11
+    add x6, x16, 18
 
-    sub x7, x15, 48
-    add x8, x16, 9
+    sub x7, x15, 28
+    sub x8, x16, 16
+
+    // Back of Missile
+    add x3, x15, 7
+    sub x4, x16, 5
+    
+    add x5, x15, 28
+    sub x6, x16, 14
+
+    sub x7, x15, 1
+    sub x8, x16, 38
 
     bl paintRoundedTriangle
 
     b end_paint_missile
 
+
     ///////////////////////////////////////////////////////////////////////
     West_m:
+    // Main Body
     mov	w3, 0
 	fmov s3, w3 // s3 = 0
 
     mov x4, x15
     mov x5, x16
 
-    mov x6, 55
-    mov x7, 15
+    mov x6, 22
+    mov x7, 10
+
+    bl paintEllipse
+
+    // Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+    add x4, x15, 33
+    mov x5, x16
+
+    mov x6, 10
+    mov x7, 5
+
+    bl paintEllipse
+
+    // Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    add x4, x15, 28
+    mov x5, x16
+
+    mov x6, 9
+    mov x7, 4
 
     bl paintEllipse 
 
-    //// Nose of Plane  
-    sub x3, x15, 61
+    // Nose of Missile
+    ldur x10, [sp, 64]
+    sub x3, x15, 30
     mov x4, x16
     
-    sub x5, x15, 41
+    sub x5, x15, 10
     sub x6, x16, 10
 
-    sub x7, x15, 41
+    sub x7, x15, 10
+    add x8, x16, 10
+
+    bl paintRoundedTriangle
+
+    // Back of Missile
+    add x3, x15, 10
+    mov x4, x16
+    
+    add x5, x15, 30
+    sub x6, x16, 10
+
+    add x7, x15, 30
     add x8, x16, 10
 
     bl paintRoundedTriangle
 
     b end_paint_missile
 
+
     ///////////////////////////////////////////////////////////////////////
     Northwest_m:
+    // Main Body
     mov	w3, 52429
 	movk w3, 0x400c, lsl 16
 	fmov s3, w3 // s3 = 0.8
@@ -2902,31 +3310,66 @@ paintMissile:
     mov x4, x15
     mov x5, x16
 
-    mov x6, 55
-    mov x7, 15
+    mov x6, 22
+    mov x7, 10
+
+    bl paintEllipse
+
+    // Red Fire 
+    movz x10, 0xe6, lsl 16
+	movk x10, 0x1710, lsl 0
+
+    add x4, x15, 19
+    add x5, x16, 24
+
+    mov x6, 10
+    mov x7, 5
+
+    bl paintEllipse
+
+    // Yellow Fire
+    movz x10, 0xed, lsl 16
+	movk x10, 0xca02, lsl 0
+    add x4, x15, 18
+    add x5, x16, 22
+
+    mov x6, 9
+    mov x7, 4
 
     bl paintEllipse 
 
-    //// Nose of Plane 
-    sub x3, x15, 43
-    sub x4, x16, 55
+    // Nose of Missile
+    ldur x10, [sp,64] 
+    sub x3, x15, 20
+    sub x4, x16, 23
     
-    sub x5, x15, 5
-    sub x6, x16, 50
+    add x5, x15, 18
+    sub x6, x16, 23
 
-    sub x7, x15, 48
-    sub x8, x16, 12
+    sub x7, x15, 25
+    add x8, x16, 12
+
+    bl paintRoundedTriangle
+
+    // Back of Missile
+    add x3, x15, 5
+    add x4, x16, 4
+    
+    add x5, x15, 43
+    add x6, x16, 4
+
+    mov x7, x15
+    add x8, x16, 29
 
     bl paintRoundedTriangle
 
     end_paint_missile:
     
-    ldur x19, [sp,104]
-    ldur x18, [sp,96]
-    ldur x17, [sp,88]
-    ldur x16, [sp,80]   
-    ldur x15, [sp,72]   
-    ldur x10, [sp,64]   
+    ldur x18,[sp,96]
+    ldur x17,[sp,88]
+    ldur x16,[sp,80]   
+    ldur x15,[sp,72]   
+    ldur x10,[sp,64]   
     ldur x9, [sp,56]   
     ldur x8, [sp,48]    
     ldur x7, [sp,40]    
@@ -2935,8 +3378,7 @@ paintMissile:
     ldur x4, [sp,16]
     ldur x3, [sp,8]
     ldur lr, [sp]    
-    add sp, sp, 112
+    add sp, sp, 104
     ret
-
 
 .endif
