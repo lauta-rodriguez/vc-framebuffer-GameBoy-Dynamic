@@ -170,13 +170,25 @@ endZoomIn:
 
     mov x17, 1
     mov x15, 320
-    mov x16, 340
+	mov x16, 340
+	
+	bl paintMissile
+	
+    mov x16, 240
+
+    
 
 loopPlane:
 	cmp x16, 140
 	b.le endloopPlane
+	
     bl paintPlane
 	
+
+	add x16, x16, 100
+	bl paintMissile
+	sub x16, x16, 100
+
 	bl actualizarFrameBuffer
 
 	bl delay
