@@ -3387,4 +3387,150 @@ paintMissile:
     add sp, sp, 104
     ret
 
+paintCloudTypeOne:
+    // Paints a Cloud One centered at (x0, y0) coordenates
+    // (x15, x16) -> Center of the Cloud
+    // x10 -> Colour
+    //
+    // Disclaimer: The Cloud One will always have the same size
+
+    sub sp, sp, 72
+    stur x16,[sp,64]
+    stur x15,[sp,56]   // y0
+    stur x10,[sp,48]   // x0
+    stur x7, [sp,40]    // colour 
+    stur x6, [sp,32]    
+    stur x5, [sp,24]    
+    stur x4, [sp,16]
+    stur x3, [sp,8]
+    stur lr, [sp]       // return pointer
+
+    mov	w3, 0
+	fmov s3, w3 // s3 = 0
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 40
+    mov x7, 15
+
+    bl paintEllipse
+
+    mov x3, 15
+
+    add x4, x15, 30
+    add x5, x16, 0 
+
+    bl paintCircle
+
+    add x4, x15, 20
+    add x5, x16, 10
+
+    bl paintCircle
+
+    add x4, x15, 0
+    add x5, x16, 10
+
+    bl paintCircle
+
+    sub x4, x15, 5
+    sub x5, x16, 5
+
+    bl paintCircle
+
+    sub x4, x15, 20
+    sub x5, x16, 0
+
+    bl paintCircle
+
+    sub x4, x15, 25
+    add x5, x16, 5
+
+    bl paintCircle
+
+    ldur x16, [sp,64]  
+    ldur x15, [sp,56]   
+    ldur x10, [sp,48]   
+    ldur x7, [sp,40]    
+    ldur x6, [sp,32]    
+    ldur x5, [sp,24]
+    ldur x4, [sp,16]
+    ldur x3, [sp,8]
+    ldur lr, [sp]       // return pointer
+    add sp, sp, 72
+    ret 
+
+paintCloudTypeTwo:
+    // Paints a Cloud Two centered at (x0, y0) coordenates
+    // (x15, x16) -> Center of the Cloud
+    // x10 -> Colour
+    //
+    // Disclaimer: The Cloud Two will always have the same size
+
+    sub sp, sp, 72
+    stur x16, [sp,64]
+    stur x15, [sp,56]   // y0
+    stur x10, [sp,48]   // x0
+    stur x7, [sp,40]    // colour 
+    stur x6, [sp,32]    
+    stur x5, [sp,24]    
+    stur x4, [sp,16]
+    stur x3, [sp,8]
+    stur lr, [sp]       // return pointer
+
+    mov	w3, 0
+	fmov s3, w3 // s3 = 0
+
+    mov x4, x15
+    mov x5, x16
+
+    mov x6, 40
+    mov x7, 15
+
+    bl paintEllipse
+
+    mov x3, 15
+
+    add x4, x15, 15
+    sub x5, x16, 15 
+
+    bl paintCircle
+
+    sub x4, x15, 20
+    sub x5, x16, 10
+
+    bl paintCircle
+
+    add x4, x15, 30
+    sub x5, x16, 3
+
+    bl paintCircle
+
+    sub x4, x15, 30
+    sub x5, x16, 3
+
+    bl paintCircle
+
+    add x4, x15, 0
+    sub x5, x16, 10
+
+    bl paintCircle
+
+    sub x4, x15, 15
+    add x5, x16, 5
+
+    bl paintCircle
+
+    ldur x16, [sp,64]  
+    ldur x15, [sp,56]   
+    ldur x10, [sp,48]   
+    ldur x7, [sp,40]    
+    ldur x6, [sp,32]    
+    ldur x5, [sp,24]
+    ldur x4, [sp,16]
+    ldur x3, [sp,8]
+    ldur lr, [sp]       // return pointer
+    add sp, sp, 72
+    ret
+
 .endif

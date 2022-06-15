@@ -7,9 +7,6 @@
 
 .globl main
 
-
-
-
 main:
 
 	adr x1, dir_frameBuffer
@@ -150,23 +147,20 @@ endZoomIn:
     add x6, x6, x6       // doubles that distance
     sub x4, x4, x6      // substracts it from border height
 	
+	// turns on the display
 	bl paintRectangle
 	bl delay
 	bl delay
 	bl delay
 	bl delay
-	
-	//movz x18, 0xbb, lsl 16
-	//movk x18, 0xc7c7, lsl 0
+
+//----------------------PLANE CHASE ANIMATION------------------------
 
 	movz x18, 0x41, lsl 16
     movk x18, 0x533b, lsl 0
 
 	movz x19, 0x9e, lsl 16
     movk x19, 0x9a75, lsl 0
-
-    //movz x19, 0xb1, lsl 16
-    //movk x19, 0xb3b3, lsl 0
 
     mov x17, 1
     mov x15, 320
@@ -176,7 +170,6 @@ endZoomIn:
 	
     mov x16, 240
 
-    
 
 loopPlane:
 	cmp x16, 140
@@ -245,5 +238,7 @@ retreat:
 	b retreat
 endRetreat:
 	bl delayZzzlow
+
+//----------------------PLANE CHASE END------------------------
 
 infloop: b reset
