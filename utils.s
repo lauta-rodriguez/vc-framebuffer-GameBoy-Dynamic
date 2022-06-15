@@ -2828,6 +2828,9 @@ paintMissile:
     stur x3, [sp,8]
     stur lr, [sp]       // return pointer
 
+
+    movz x10, 0xe3, lsl 16
+	movk x10, 0xe1d3, lsl 0
     // First we check the Direction of the Missile 
     cmp x17, 1
     b.eq North_m
@@ -2887,6 +2890,9 @@ paintMissile:
 
     // Nose of Missile 
     ldur x10, [sp,64]
+    //hardcoded color
+    movz x10, 0xe3, lsl 16
+	movk x10, 0xe1d3, lsl 0
     mov x3, x15
     sub x4, x16, 28
     
