@@ -3395,15 +3395,18 @@ paintCloudTypeOne:
     // Disclaimer: The Cloud One will always have the same size
 
     sub sp, sp, 72
-    stur x16,[sp,64]
-    stur x15,[sp,56]   // y0
-    stur x10,[sp,48]   // x0
-    stur x7, [sp,40]    // colour 
+    stur x16,[sp,64]   // y0
+    stur x15,[sp,56]   // x0
+    stur x10,[sp,48]   // colour 
+    stur x7, [sp,40]    
     stur x6, [sp,32]    
     stur x5, [sp,24]    
     stur x4, [sp,16]
     stur x3, [sp,8]
     stur lr, [sp]       // return pointer
+
+    movz x10, 0xff, lsl 16 
+    movk x10, 0xffff, lsl 0
 
     mov	w3, 0
 	fmov s3, w3 // s3 = 0
@@ -3478,6 +3481,9 @@ paintCloudTypeTwo:
     stur x3, [sp,8]
     stur lr, [sp]       // return pointer
 
+    movz x10, 0xff, lsl 16 
+    movk x10, 0xffff, lsl 0
+    
     mov	w3, 0
 	fmov s3, w3 // s3 = 0
 

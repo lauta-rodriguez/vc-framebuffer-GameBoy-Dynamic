@@ -136,8 +136,8 @@ endZoomIn:
 
 	sub x2, x2, 1
 
-	movz x10, 0xd6, lsl 16
-    movk x10, 0xffff, lsl 0 
+	movz x10, 0x8d, lsl 16
+    movk x10, 0xebff, lsl 0 
 	
 	// calculates display width
     add x5, x5, x5       // doubles the horizontal margin
@@ -154,91 +154,126 @@ endZoomIn:
 	bl delay
 	bl delay
 
+//----------------------ANIMATION------------------------
+
+// todo: 
+// 1°: agregar nubes
+// el x15, x16 mas cerca de la esquina del display es 165,90 (para nubes)
+
+//----------------------ANIMATION------------------------
+
+loopAnimation:
+	// nubes top left
+	mov x15, 165
+	mov x16, 90
+	bl paintCloudTypeOne
+	
+	add x15, x15, 85
+	add x16, x16, 20
+	bl paintCloudTypeTwo
+	
+	// nubes mid right
+	mov x15, 350
+	mov x16, 250
+	bl paintCloudTypeTwo
+	
+	add x15, x15, 85
+	add x16, x16, 20
+	bl paintCloudTypeOne
+	
+	// nubes bottom mid
+	mov x15, 200
+	mov x16, 370
+	bl paintCloudTypeOne
+	
+
+bl actualizarFrameBuffer
+
 //----------------------PLANE CHASE ANIMATION------------------------
 
-	movz x18, 0x41, lsl 16
-    movk x18, 0x533b, lsl 0
-
-	movz x19, 0x9e, lsl 16
-    movk x19, 0x9a75, lsl 0
-
-    mov x17, 1
-    mov x15, 320
-	mov x16, 340
-	
-	bl paintMissile
-	
-    mov x16, 240
-
-
-loopPlane:
-	cmp x16, 140
-	b.le endloopPlane
-	
-    bl paintPlane
-	
-
-	add x16, x16, 100
-	bl paintMissile
-	sub x16, x16, 100
-
-	bl actualizarFrameBuffer
-
-	bl delay
-	sub x16, x16, 3
-	bl paintRectangle
-	b loopPlane
-
-endloopPlane: 
-	bl paintRectangle
-
-	mov x17, 2
-	bl paintPlane
-	bl actualizarFrameBuffer
-	bl delay
-	
-	add x15, x15, 2
-	mov x17, 3
-	bl paintRectangle
-	bl paintPlane
-	bl actualizarFrameBuffer
-	bl delay
-
-	add x15, x15, 2
-	mov x17, 4
-	bl paintRectangle
-	bl paintPlane
-	bl actualizarFrameBuffer
-	bl delay
-
-	add x15, x15, 2
-	mov x17, 4
-	bl paintRectangle
-	bl paintPlane
-	bl actualizarFrameBuffer
-	bl delay
-
-	add x15, x15, 2
-	mov x17, 5
-	bl paintRectangle
-	bl paintPlane
-	bl actualizarFrameBuffer
-	bl delay
-
-retreat:
-	cmp x16, 350
-	b.gt endRetreat
-
-	bl paintRectangle
-	bl paintPlane
-	bl actualizarFrameBuffer
-	bl delay
-
-	add x16, x16, 3
-	b retreat
-endRetreat:
-	bl delayZzzlow
+//	movz x18, 0x41, lsl 16
+//    movk x18, 0x533b, lsl 0
+//
+//	movz x19, 0x9e, lsl 16
+//    movk x19, 0x9a75, lsl 0
+//
+//    mov x17, 1
+//    mov x15, 320
+//	mov x16, 340
+//	
+//
+//	bl paintMissile
+//	
+//    mov x16, 240
+//
+//loopPlane:
+//	cmp x16, 140
+//	b.le endloopPlane
+//	
+//    bl paintPlane
+//	
+//
+//	add x16, x16, 100
+//	bl paintMissile
+//	sub x16, x16, 100
+//
+//	bl actualizarFrameBuffer
+//
+//	bl delay
+//	sub x16, x16, 3
+//	bl paintRectangle
+//	b loopPlane
+//
+//endloopPlane: 
+//	bl paintRectangle
+//
+//	mov x17, 2
+//	bl paintPlane
+//	bl actualizarFrameBuffer
+//	bl delay
+//	
+//	add x15, x15, 2
+//	mov x17, 3
+//	bl paintRectangle
+//	bl paintPlane
+//	bl actualizarFrameBuffer
+//	bl delay
+//
+//	add x15, x15, 2
+//	mov x17, 4
+//	bl paintRectangle
+//	bl paintPlane
+//	bl actualizarFrameBuffer
+//	bl delay
+//
+//	add x15, x15, 2
+//	mov x17, 4
+//	bl paintRectangle
+//	bl paintPlane
+//	bl actualizarFrameBuffer
+//	bl delay
+//
+//	add x15, x15, 2
+//	mov x17, 5
+//	bl paintRectangle
+//	bl paintPlane
+//	bl actualizarFrameBuffer
+//	bl delay
+//
+//retreat:
+//	cmp x16, 350
+//	b.gt endRetreat
+//
+//	bl paintRectangle
+//	bl paintPlane
+//	bl actualizarFrameBuffer
+//	bl delay
+//
+//	add x16, x16, 3
+//	b retreat
+//endRetreat:
+//	bl delayZzzlow
 
 //----------------------PLANE CHASE END------------------------
 
-infloop: b reset
+infloop: b infloop
