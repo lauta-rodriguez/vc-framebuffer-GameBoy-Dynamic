@@ -155,6 +155,11 @@ endZoomIn:
 	bl delay
 
 //----------------------ANIMATION------------------------
+
+// aca se puede prender el display
+
+// de aca para abajo empieza el juego
+
 // aux register x21
 
 mov x21, xzr
@@ -271,6 +276,7 @@ loopAnimationTurnAround:
 
 	bl actualizarFrameBuffer
 	bl delay
+	bl delay
 	add x21, x21, 1
 	b loopAnimationTurnAround
 endAnimationTurnAround:
@@ -281,7 +287,7 @@ loopAnimationRetreat:
 	bl paintRectangle
 
 	// compare and branch
-	cmp x21, 180
+	cmp x21, 130
 	b.eq endAnimationRetreat
 
 	// nubes top left
@@ -333,5 +339,9 @@ loopAnimationRetreat:
 	b loopAnimationRetreat
 
 endAnimationRetreat:
+
+
+
+
 
 infloop: b infloop
