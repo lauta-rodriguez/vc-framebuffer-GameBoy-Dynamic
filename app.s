@@ -162,34 +162,45 @@ endZoomIn:
 
 //----------------------ANIMATION------------------------
 
+// aux register x21
+
+	mov x21, xzr
+
 loopAnimation:
+	// resetea el cielo
+	bl paintRectangle
+
+	// compare and branch
+	cmp x21, 180
+	b.eq end_animation
+
 	// nubes top left
 	mov x15, 165
 	mov x16, 90
+	add x15, x15, x21
 	bl paintCloudTypeOne
 	
-	add x15, x15, 85
-	add x16, x16, 20
+	mov x15, 250
+	mov x16, 110
+	add x15, x15, x21
 	bl paintCloudTypeTwo
 	
 	// nubes mid right
 	mov x15, 350
 	mov x16, 250
-	bl paintCloudTypeTwo
-	
-	add x15, x15, 85
-	add x16, x16, 20
+	sub x15, x15, x21
 	bl paintCloudTypeOne
+	
+	mov x15, 435
+	mov x16, 270
+	sub x15, x15, x21
+	bl paintCloudTypeTwo
 	
 	// nubes bottom mid
 	mov x15, 200
 	mov x16, 370
+	add x15, x15, x21
 	bl paintCloudTypeOne
-	
-
-bl actualizarFrameBuffer
-
-//----------------------PLANE CHASE ANIMATION------------------------
 
 //	movz x18, 0x41, lsl 16
 //    movk x18, 0x533b, lsl 0
@@ -197,15 +208,46 @@ bl actualizarFrameBuffer
 //	movz x19, 0x9e, lsl 16
 //    movk x19, 0x9a75, lsl 0
 //
-//    mov x17, 1
-//    mov x15, 320
-//	mov x16, 340
-//	
+//	// ARREGLAR
 //
-//	bl paintMissile
+//	cmp x21, 100
+//	b.lt sube
+//	b.eq gira
 //	
-//    mov x16, 240
+//	sube:
+//	    mov x17, 1
+//	    mov x15, 320
+//		mov x16, 340
+//		sub x16, x16, x21
+//		bl paintPlane
 //
+//		cmp x21, 100
+//		b.lt end_if
+//
+//	end_sube:
+//
+//	gira:
+//
+//
+//	end_gira:
+//	
+//	// se ejecuta siempre después de sube !
+//	baja:
+//
+//
+//	end_if:
+
+	bl actualizarFrameBuffer
+	bl delay
+	add x21, x21, 1
+	b loopAnimation
+	
+end_animation:
+
+//----------------------PLANE CHASE ANIMATION------------------------
+
+
+// mov x16, 240
 //loopPlane:
 //	cmp x16, 140
 //	b.le endloopPlane
