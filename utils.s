@@ -842,12 +842,18 @@ drawFurniture:
 
 drawWindow:
     //------------------
-    sub sp, sp, 56      // reserve memory in the stack 
-    stur x3, [sp,48]    // floor's initial x coordinate
-    stur x4, [sp,40]    // floor's initial y coordinate
-    stur x5, [sp,32]    // furniture width
-    stur x7, [sp,24]     // furniture height
-    stur x11,[sp,16]      // aux register  
+    sub sp, sp, 104      // reserve memory in the stack 
+    stur x1, [sp,96]
+    stur x2, [sp,88]
+    stur x3, [sp,80]    // floor's initial x coordinate
+    stur x4, [sp,72]    // floor's initial y coordinate
+    stur x5, [sp,64]    // furniture width
+    stur x6, [sp,56]
+    stur x7, [sp,48]     // furniture height
+    stur x8, [sp,40]
+    stur x9, [sp,32]
+    stur x10,[sp,24]
+    stur x11,[sp,16]      // aux register
     stur x12,[sp,8]      // aux register
     stur lr, [sp,0]
     //------------------
@@ -994,10 +1000,16 @@ drawWindow:
     bl paintRectangle
 
     //------------------
-    ldur x1, [sp,48]    // floor's initial x coordinate
-    ldur x2, [sp,40]    // floor's initial y coordinate
-    ldur x3, [sp,32]    // furniture width
-    ldur x4, [sp,24]     // furniture height
+    ldur x1, [sp,96]
+    ldur x2, [sp,88]
+    ldur x3, [sp,80]    // floor's initial x coordinate
+    ldur x4, [sp,72]    // floor's initial y coordinate
+    ldur x5, [sp,64]    // furniture width
+    ldur x6, [sp,56]
+    ldur x7, [sp,48]     // furniture height
+    ldur x8, [sp,40]
+    ldur x9, [sp,32]
+    ldur x10,[sp,24]
     ldur x11,[sp,16]      // aux register  
     ldur x12,[sp,8]      // aux register
     ldur lr, [sp,0]

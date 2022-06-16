@@ -156,12 +156,7 @@ endZoomIn:
 
 //----------------------ANIMATION------------------------
 
-// aca se puede prender el display
-
-// de aca para abajo empieza el juego
-
 // aux register x21
-
 mov x21, xzr
 
 loopAnimationUP:
@@ -340,8 +335,116 @@ loopAnimationRetreat:
 
 endAnimationRetreat:
 
+mov x21, xzr
+loopAnimationDVDCorner:
+	// paints the sky 
+	bl paintRectangle
+
+	// compare and branch
+	cmp x21, 50
+	b.eq endAnimationDVDCorner
+
+	// nubes top left
+	mov x15, 211	//fix nube toca borde
+	mov x16, 90
+	sub x15, x15, x21
+	bl paintCloudTypeOne
+	
+	mov x15, 296	//fix nube toca borde
+	mov x16, 110	
+	sub x15, x15, x21
+	bl paintCloudTypeTwo
+	
+	// nubes mid right
+	mov x15, 305
+	mov x16, 250
+	add x15, x15, x21
+	bl paintCloudTypeOne
+	
+	mov x15, 390
+	mov x16, 270
+	add x15, x15, x21
+	bl paintCloudTypeTwo
+	
+	// nubes bottom mid
+	mov x15, 245
+	mov x16, 370
+	sub x15, x15, x21
+	bl paintCloudTypeOne
+
+
+	// plane going down
+	movz x18, 0x41, lsl 16
+    movk x18, 0x533b, lsl 0
+
+	movz x19, 0x9e, lsl 16
+    movk x19, 0x9a75, lsl 0
+
+	mov x17, 6
+	mov x15, 320
+	mov x16, 290
+
+	sub x15, x15, x21
+	add x16, x16, x21
+
+	bl paintPlane
+
+
+	bl actualizarFrameBuffer
+	bl delay
+	add x21, x21, 1
+	b loopAnimationDVDCorner
+
+
+endAnimationDVDCorner:
+
+mov x21, xzr
+loopAnimationOoosoo:
+	// paints the sky 
+	bl paintRectangle
+
+	// compare and branch
+	cmp x21, 5
+	b.eq endAnimationOoosoo
+
+	// nubes top left
+	mov x15, 163	//fix nube toca borde
+	mov x16, 90
+	add x15, x15, x21
+	bl paintCloudTypeOne
+	
+	mov x15, 248	//fix nube toca borde
+	mov x16, 110
+	add x15, x15, x21
+	bl paintCloudTypeTwo
+	
+	// nubes mid right
+	mov x15, 355
+	mov x16, 250
+	sub x15, x15, x21
+	bl paintCloudTypeOne
+	
+	mov x15, 440
+	mov x16, 270
+	sub x15, x15, x21
+	bl paintCloudTypeTwo
+	
+	// nubes bottom mid
+	mov x15, 195
+	mov x16, 370
+	add x15, x15, x21
+	bl paintCloudTypeOne
 
 
 
+	bl actualizarFrameBuffer
+	bl delay
+	bl delay
+	add x21, x21, 1
+	b loopAnimationOoosoo
 
-infloop: b infloop
+endAnimationOoosoo:
+
+
+
+infloop: b loopAnimationUP
