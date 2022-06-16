@@ -155,24 +155,17 @@ endZoomIn:
 	bl delay
 
 //----------------------ANIMATION------------------------
-
-// todo: 
-// 1°: agregar nubes
-// el x15, x16 mas cerca de la esquina del display es 165,90 (para nubes)
-
-//----------------------ANIMATION------------------------
-
 // aux register x21
 
-	mov x21, xzr
+mov x21, xzr
 
-loopAnimation:
-	// resetea el cielo
+loopAnimationUP:
+	// paints the sky 
 	bl paintRectangle
 
 	// compare and branch
 	cmp x21, 180
-	b.eq end_animation
+	b.eq endAnimationUP
 
 	// nubes top left
 	mov x15, 165
@@ -202,120 +195,143 @@ loopAnimation:
 	add x15, x15, x21
 	bl paintCloudTypeOne
 
-//	movz x18, 0x41, lsl 16
-//    movk x18, 0x533b, lsl 0
-//
-//	movz x19, 0x9e, lsl 16
-//    movk x19, 0x9a75, lsl 0
-//
-//	// ARREGLAR
-//
-//	cmp x21, 100
-//	b.lt sube
-//	b.eq gira
-//	
-//	sube:
-//	    mov x17, 1
-//	    mov x15, 320
-//		mov x16, 340
-//		sub x16, x16, x21
-//		bl paintPlane
-//
-//		cmp x21, 100
-//		b.lt end_if
-//
-//	end_sube:
-//
-//	gira:
-//
-//
-//	end_gira:
-//	
-//	// se ejecuta siempre después de sube !
-//	baja:
-//
-//
-//	end_if:
+
+	// plane going up
+	movz x18, 0x41, lsl 16
+    movk x18, 0x533b, lsl 0
+
+	movz x19, 0x9e, lsl 16
+    movk x19, 0x9a75, lsl 0
+
+	mov x17, 1
+	mov x15, 320
+	mov x16, 340
+	sub x16, x16, x21
+	bl paintPlane
+
 
 	bl actualizarFrameBuffer
 	bl delay
 	add x21, x21, 1
-	b loopAnimation
+	b loopAnimationUP
+
+endAnimationUP:
+
+mov x21, xzr
+loopAnimationTurnAround:
+	// paints the sky 
+	bl paintRectangle
+
+	// compare and branch
+	cmp x21, 5
+	b.eq endAnimationTurnAround
+
+	// nubes top left
+	mov x15, 345
+	mov x16, 90
+	sub x15, x15, x21
+	bl paintCloudTypeOne
 	
-end_animation:
+	mov x15, 430
+	mov x16, 110
+	sub x15, x15, x21
+	bl paintCloudTypeTwo
+	
+	// nubes mid right
+	mov x15, 170
+	mov x16, 250
+	add x15, x15, x21
+	bl paintCloudTypeOne
+	
+	mov x15, 255
+	mov x16, 270
+	add x15, x15, x21
+	bl paintCloudTypeTwo
+	
+	// nubes bottom mid
+	mov x15, 380
+	mov x16, 370
+	sub x15, x15, x21
+	bl paintCloudTypeOne
 
-//----------------------PLANE CHASE ANIMATION------------------------
+
+	// plane turning around to the right
+	movz x18, 0x41, lsl 16
+    movk x18, 0x533b, lsl 0
+
+	movz x19, 0x9e, lsl 16
+    movk x19, 0x9a75, lsl 0
+
+	mov x17, 1
+	add x17, x17, x21
+	mov x15, 320
+	mov x16, 160
+	bl paintPlane
 
 
-// mov x16, 240
-//loopPlane:
-//	cmp x16, 140
-//	b.le endloopPlane
-//	
-//    bl paintPlane
-//	
-//
-//	add x16, x16, 100
-//	bl paintMissile
-//	sub x16, x16, 100
-//
-//	bl actualizarFrameBuffer
-//
-//	bl delay
-//	sub x16, x16, 3
-//	bl paintRectangle
-//	b loopPlane
-//
-//endloopPlane: 
-//	bl paintRectangle
-//
-//	mov x17, 2
-//	bl paintPlane
-//	bl actualizarFrameBuffer
-//	bl delay
-//	
-//	add x15, x15, 2
-//	mov x17, 3
-//	bl paintRectangle
-//	bl paintPlane
-//	bl actualizarFrameBuffer
-//	bl delay
-//
-//	add x15, x15, 2
-//	mov x17, 4
-//	bl paintRectangle
-//	bl paintPlane
-//	bl actualizarFrameBuffer
-//	bl delay
-//
-//	add x15, x15, 2
-//	mov x17, 4
-//	bl paintRectangle
-//	bl paintPlane
-//	bl actualizarFrameBuffer
-//	bl delay
-//
-//	add x15, x15, 2
-//	mov x17, 5
-//	bl paintRectangle
-//	bl paintPlane
-//	bl actualizarFrameBuffer
-//	bl delay
-//
-//retreat:
-//	cmp x16, 350
-//	b.gt endRetreat
-//
-//	bl paintRectangle
-//	bl paintPlane
-//	bl actualizarFrameBuffer
-//	bl delay
-//
-//	add x16, x16, 3
-//	b retreat
-//endRetreat:
-//	bl delayZzzlow
+	bl actualizarFrameBuffer
+	bl delay
+	add x21, x21, 1
+	b loopAnimationTurnAround
+endAnimationTurnAround:
 
-//----------------------PLANE CHASE END------------------------
+mov x21, xzr
+loopAnimationRetreat:
+	// paints the sky 
+	bl paintRectangle
+
+	// compare and branch
+	cmp x21, 180
+	b.eq endAnimationRetreat
+
+	// nubes top left
+	mov x15, 340
+	mov x16, 90
+	sub x15, x15, x21
+	bl paintCloudTypeOne
+	
+	mov x15, 425
+	mov x16, 110
+	sub x15, x15, x21
+	bl paintCloudTypeTwo
+	
+	// nubes mid right
+	mov x15, 175
+	mov x16, 250
+	add x15, x15, x21
+	bl paintCloudTypeOne
+	
+	mov x15, 260
+	mov x16, 270
+	add x15, x15, x21
+	bl paintCloudTypeTwo
+	
+	// nubes bottom mid
+	mov x15, 375
+	mov x16, 370
+	sub x15, x15, x21
+	bl paintCloudTypeOne
+
+
+	// plane going down
+	movz x18, 0x41, lsl 16
+    movk x18, 0x533b, lsl 0
+
+	movz x19, 0x9e, lsl 16
+    movk x19, 0x9a75, lsl 0
+
+	mov x17, 5
+	mov x15, 320
+	mov x16, 160
+	add x16, x16, x21
+	bl paintPlane
+
+
+	bl actualizarFrameBuffer
+	bl delay
+	add x21, x21, 1
+	b loopAnimationRetreat
+
+endAnimationRetreat:
 
 infloop: b infloop
