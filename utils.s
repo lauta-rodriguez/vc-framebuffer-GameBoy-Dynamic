@@ -971,9 +971,9 @@ drawWindow:
     mov x4, 110
     bl paintRectangle
      
-  // WALL
-    movz x10, 0xD0, lsl 16
-    movk x10, 0xDDE4, lsl 00// grey
+    // WALL
+    movz x10, 0xC2, lsl 16
+    movk x10, 0x8340, lsl 00
 
     // la coordenada y del tope del borde es la altura del rectángulo a pintar
     mov x4, x2          
