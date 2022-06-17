@@ -1244,8 +1244,6 @@ drawBase: // done
     udiv x12, x5, x11   // divides horizontal margin by 3
     add x1, x1, x12     // moves that amount of pixels right
     mov x3, x11
-    //sub x3, x3, 1
-  //  bl paintRectangle
 
     //------------------ 
     ldur x1, [sp,96]    // x coordinate

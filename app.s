@@ -95,15 +95,12 @@ main:
 	// calculates x coordinate for the display
     mov x5, 8
     udiv x5, x3, x5     // horizontal margin between display and border
-//    mov x9, x5        BORRAR !!!!!!!
     add x1, x1, x5      // moves that amount of pixels right
 
     // calculates y coordinate for the display
     mov x6, 8
     udiv x6, x4, x6     // vertical margin between display and border
     add x2, x2, x6      // moves that amount of pixels down
-
-//	sub x2, x2, 1		BORRAR !!!!!!! -1
 	
 	// calculates display width
     add x5, x5, x5       // doubles the horizontal margin
@@ -112,8 +109,6 @@ main:
     // calculates display height
     add x6, x6, x6       // doubles that distance
     sub x4, x4, x6       // substracts it from border height
-
-//	add x4, x4, 1		 BORRAR !!!!!!! +1
  
 	// turns on the display
 	movz x10, 0x8d, lsl 16
