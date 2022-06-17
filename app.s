@@ -580,7 +580,7 @@ main:
 		bl delaySonic
 		add x21, x21, 1
 		b loopAnimationUP2
-	endAnimationUP2: b infloop
+	endAnimationUP2:
 
 	mov x21, xzr
 	loopAnimationDVDCorner2:
@@ -619,6 +619,16 @@ main:
 		sub x15, x15, x21
 		bl paintCloudTypeOne
 
+		// missile
+		movz x18, 0xed, lsl 16
+    	movk x18, 0xca02, lsl 0 
+
+		mov x17, 2
+		mov x15, 170
+		mov x16, 150
+		add x15, x15, x21
+		sub x16, x16, x21
+		bl paintMissile
 
 		// plane diagonal right
 		movz x18, 0x41, lsl 16
@@ -636,9 +646,7 @@ main:
 
 		bl paintPlane
 
-
 		bl actualizarFrameBuffer
-		b infloop
 		bl delaySonic
 		add x21, x21, 1
 		b loopAnimationDVDCorner2
@@ -657,35 +665,47 @@ main:
 		// nubes top left
 		mov x15, 267
 		mov x16, 90
-		add x15, x15, x21
+		sub x15, x15, x21
 		bl paintCloudTypeOne
 		
 		mov x15, 352
 		mov x16, 110
-		add x15, x15, x21
+		sub x15, x15, x21
 		bl paintCloudTypeTwo
 		
 		// nubes mid right
 		mov x15, 251
 		mov x16, 250
-		sub x15, x15, x21
+		add x15, x15, x21
 		bl paintCloudTypeOne
 		
 		mov x15, 336
 		mov x16, 270
-		sub x15, x15, x21
+		add x15, x15, x21
 		bl paintCloudTypeTwo
 		
 		// nubes bottom mid
 		mov x15, 299
 		mov x16, 370
-		add x15, x15, x21
+		sub x15, x15, x21
 		bl paintCloudTypeOne
+
+		// missile
+		movz x18, 0xed, lsl 16
+    	movk x18, 0xca02, lsl 0 
+
+		mov x17, 2
+		mov x15, 220
+		mov x16, 100
+		add x15, x15, x21
+		sub x16, x16, x21
+		bl paintMissile
+
+		// plane turning around until it faces south
 
 		mov x17, 2
 		add x17, x17, x21
-
-		// plane turning around until it faces north
+		
 		movz x18, 0x41, lsl 16
 		movk x18, 0x533b, lsl 0
 
@@ -704,7 +724,7 @@ main:
 		add x21, x21, 1
 		b loopAnimationOoosoo2
 
-	endAnimationOoosoo2:
+	endAnimationOoosoo2: 
 
 	mov x21, xzr
 	loopAnimationRetreat2:
@@ -712,38 +732,52 @@ main:
 		bl paintRectangle
 
 		// compare and branch
-		cmp x21, 110
+		cmp x21, 100
 		b.eq endAnimationRetreat2
 
 		// nubes top left
-		mov x15, 271
+		mov x15, 263
 		mov x16, 90
 		sub x15, x15, x21
 		bl paintCloudTypeOne
 		
-		mov x15, 356
+		mov x15, 348
 		mov x16, 110
 		sub x15, x15, x21
 		bl paintCloudTypeTwo
 		
 		// nubes mid right
-		mov x15, 247
+		mov x15, 255
 		mov x16, 250
 		add x15, x15, x21
 		bl paintCloudTypeOne
 		
-		mov x15, 332
+		mov x15, 340
 		mov x16, 270
 		add x15, x15, x21
 		bl paintCloudTypeTwo
 		
 		// nubes bottom mid
-		mov x15, 303
+		mov x15, 295
 		mov x16, 370
 		sub x15, x15, x21
 		bl paintCloudTypeOne
 
 
+		// missile
+		cmp x21, 50
+		b.gt noMissile
+		movz x18, 0xed, lsl 16
+    	movk x18, 0xca02, lsl 0 
+
+		mov x17, 2
+		mov x15, 224
+		mov x16, 96
+		add x15, x15, x21
+		sub x16, x16, x21
+		bl paintMissile
+
+		noMissile:
 		// plane going down
 		movz x18, 0x41, lsl 16
 		movk x18, 0x533b, lsl 0
@@ -765,4 +799,130 @@ main:
 
 	endAnimationRetreat2:
 
+//	mov x21, xzr
+//	loopAnimationRetreatBoost:
+//		// paints the sky 
+//		bl paintRectangle
+//
+//		// compare and branch
+//		cmp x21, 70
+//		b.eq endAnimationRetreatBoost
+//
+//		// nubes top left
+//		mov x15, 153
+//		mov x16, 90
+//		add x15, x15, x21
+//		bl paintCloudTypeOne
+//		
+//		mov x15, 238
+//		mov x16, 110
+//		add x15, x15, x21
+//		bl paintCloudTypeTwo
+//		
+//		// nubes mid right
+//		mov x15, 365
+//		mov x16, 250
+//		sub x15, x15, x21
+//		bl paintCloudTypeOne
+//		
+//		mov x15, 450
+//		mov x16, 270
+//		sub x15, x15, x21
+//		bl paintCloudTypeTwo
+//		
+//		// nubes bottom mid
+//		mov x15, 185
+//		mov x16, 370
+//		add x15, x15, x21
+//		bl paintCloudTypeOne
+//
+//		// plane going down
+//		movz x18, 0x41, lsl 16
+//		movk x18, 0x533b, lsl 0
+//
+//		movz x19, 0x9e, lsl 16
+//		movk x19, 0x9a75, lsl 0
+//
+//		mov x17, 5
+//		mov x15, 325
+//		mov x16, 270
+//		add x16, x16, x21
+//		bl paintPlane
+//
+//
+//		bl actualizarFrameBuffer
+//		bl delaySonic
+//		add x21, x21, 1
+//		b loopAnimationRetreatBoost
+//
+//	endAnimationRetreatBoost:
+
+	// tenemos que girar el avion y ponerlo en la posicion inicial 
+	// 320, 340. Ademas podemos hacer tiempo con las nubes hasta que queden en sus
+	// posiciones iniciales para sincronizarlas con el primer loop
+	// la posicion del loop loopAnimationRetreatBoost quedo en
+	// 325+70, 270+70 mirando para abajo
+
+//	mov x21, xzr
+//	loopAnimationRestart:
+//		// paints the sky 
+//		bl paintRectangle
+//
+//		// compare and branch
+//		cmp x21, 5
+//		b.eq endAnimationRestart
+//
+//		// nubes top left
+//		mov x15, 231
+//		mov x16, 90
+//		sub x15, x15, x21
+//		bl paintCloudTypeOne
+//		
+//		mov x15, 316
+//		mov x16, 110
+//		sub x15, x15, x21
+//		bl paintCloudTypeTwo
+//		
+//		// nubes mid right
+//		mov x15, 287
+//		mov x16, 250
+//		add x15, x15, x21
+//		bl paintCloudTypeOne
+//		
+//		mov x15, 372
+//		mov x16, 270
+//		add x15, x15, x21
+//		bl paintCloudTypeTwo
+//		
+//		// nubes bottom mid
+//		mov x15, 263
+//		mov x16, 370
+//		sub x15, x15, x21
+//		bl paintCloudTypeOne
+//
+//
+//		// plane turning around to the right
+//		movz x18, 0x41, lsl 16
+//		movk x18, 0x533b, lsl 0
+//
+//		movz x19, 0x9e, lsl 16
+//		movk x19, 0x9a75, lsl 0
+//
+//		mov x17, 5
+//		add x17, x17, x21
+//		cmp x17, 9
+//		b.lt rotate
+//		mov x17, 1
+//		rotate:
+//		mov x15, 325
+//		mov x16, 340
+//		sub x15, x15, x21
+//		bl paintPlane
+//
+//		bl actualizarFrameBuffer
+//		bl delaySonic
+//		add x21, x21, 1
+//		b loopAnimationRestart
+//	endAnimationRestart: b loopAnimationUP
+//
 infloop: b infloop
