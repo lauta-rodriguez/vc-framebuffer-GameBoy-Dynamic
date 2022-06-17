@@ -1139,7 +1139,7 @@ drawWindow:
     mov x4, 8
     bl paintRectangle
 
-    // draws the diagonal line at the bottom right corner of the frame
+    // draws the diagonal line at the top right corner of the frame
     add x1, x1, 35
     sub x2, x2, 51
 
@@ -1151,8 +1151,8 @@ drawWindow:
         b.eq end_diagonalLeftUp
 
         bl paintRectangle
-        sub x1, x1, 1   // al final del loop queda x1 - 35
-        sub x2, x2, 1   // al final del loop queda x2 + 35
+        sub x1, x1, 1   
+        sub x2, x2, 1   
 
         add x7, x7, 1
         b diagonalLeftUp
