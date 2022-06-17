@@ -8,7 +8,6 @@
 ## Estructura
 
 - **[app.s](app.s)** Este archivo contiene la aplicación. Todo el hardware ya está inicializado anteriormente.
-- **[gameboy.s](gameboy.s)** Este archivo contiene los procedimientos necesarios para construir el gameboy.
 - **[utils.s](utils.s)** Este archivo contiene los procedimientos que implementan figuras geometricas, entre otras cosas 'útiles'.
 - **[start.s](start.s)** Este archivo realiza la inicialización del hardware
 - **[Makefile](Makefile)** Archivo que describe como construir el software _(que ensamblador utilizar, que salida generar, etc)_
