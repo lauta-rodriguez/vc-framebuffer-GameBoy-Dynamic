@@ -788,6 +788,9 @@ drawFurniture:
     stur x2, [sp,40]    // floor's initial y coordinate
     stur x3, [sp,32]    // furniture width
     stur x4, [sp,24]     // furniture height
+//    stur x5, [sp, ]
+//    stur x6, [sp, ]
+//    stur x10,[sp, ]
     stur x11,[sp,16]      // aux register  
     stur x12,[sp,8]      // aux register
     stur lr, [sp,0]

@@ -8,6 +8,7 @@
 .globl main
 main:
 
+	// Secondary framebuffer
 	adr x1, dir_frameBuffer
 	str x0, [x1] // Save the framebuffer memory address in dir_FrameBuffer
 	ldr x0, =bufferSecundario // Load the secondary framebuffer base address in x0
@@ -32,47 +33,36 @@ main:
   	// Furnite
 	bl drawFurniture
 
-	// Every single component dimensions are  calculated based on the top-left corner
-	// of the display (x1, x2) and the dimensions of the display frame (x3,x4)
+	// Every single component dimensions of the gameboy are calculated 
+	// based on the top-left corner of the display frame (x1, x2) and
+	// its dimensions (x3,x4)
 
 	// To readjust the gameboy size, modify the coordinates (x3, x4)
 	// Everything will be centered in relation to that rectangle
 
-	// Gameboy's display frame parameters
+	// Gameboy's display frame dimensions
 	mov x3, 160		// width
 	mov x4, 100		// height
 
 	//----------------------ZOOM IN GAMEBOY DISPLAY-------------
 	zoomIn:
 
+		// stops when the display frame is 472 pixels tall
 		cmp x4, 472
 		b.ge endZoomIn
 
-		//Registers initalization
-	    mov x1, xzr		// gameboy display x coordinate
-	    mov x2, xzr		// gameboy display y coordinate
-	
-		mov x13, xzr	// temp
-		mov x14, xzr	// temp
+	    mov x13, SCREEN_WIDTH // framebuffer width
+	    mov x14, SCREEN_HEIGH // framebuffer height 
 
-	    add x13, x13, SCREEN_WIDTH // framebuffer width
-	    add x14, x14, SCREEN_HEIGH // framebuffer height 
-
-	    // center border horizontally in the framebuffer
-	    sub x13, x13, x3      // substracts base width from framebuffer width 
+	    // center display frame horizontally in the framebuffer
+	    sub x13, x13, x3      // substracts display frame width from framebuffer width 
 	    lsr x13, x13, 1       // divides it in half
-	    add x1, x1, x13       // move that amount of pixels right
+	    mov x1, x13			  // starting x coordinate for the display frame
 	
-	    // center border vertically in the framebuffer
+	    // center display frame vertically in the framebuffer
 	    sub x14, x14, x4      // substracts base height from framebuffer height 
 	    lsr x14, x14, 1       // divides it in half
-	    add x2, x2, x14       // move that amount of pixels right
-
-		// Agrego un offset negativo de 10 pixeles a la dimensión 
-		// vertical para que entre la animación del cartucho
-		// smoothly move the gameboy upwards 10 pixels and thennn
-		// zoom in 
-		//sub x2, x2, 10
+	    mov x2, x14      	  // starting y coordinate for the display frame
 
 		bl drawCartridge
 	    bl drawBase
@@ -86,6 +76,7 @@ main:
 		bl actualizarFrameBuffer
 
 		bl delay
+		// increment in the display's frame size each time 
 		add x3,x3,4
 		add x4,x4,4
 		b zoomIn
@@ -93,8 +84,8 @@ main:
 
 	endZoomIn: 
 	//----------------------ZOOM IN GAMEBOY DISPLAY END---------
+	
 	// turning on the led light
-
 	// led colour
 	movz x11, 0xff, lsl 16
     movk x11, 0x160c, lsl 0
@@ -104,7 +95,7 @@ main:
 	// calculates x coordinate for the display
     mov x5, 8
     udiv x5, x3, x5     // horizontal margin between display and border
-    mov x9, x5             
+//    mov x9, x5        BORRAR !!!!!!!
     add x1, x1, x5      // moves that amount of pixels right
 
     // calculates y coordinate for the display
@@ -112,21 +103,21 @@ main:
     udiv x6, x4, x6     // vertical margin between display and border
     add x2, x2, x6      // moves that amount of pixels down
 
-	sub x2, x2, 1
-
-	movz x10, 0x8d, lsl 16
-    movk x10, 0xebff, lsl 0 
+//	sub x2, x2, 1		BORRAR !!!!!!! -1
 	
 	// calculates display width
     add x5, x5, x5       // doubles the horizontal margin
-    sub x3, x3, x5      // substracts it from border width
+    sub x3, x3, x5       // substracts it from border width
 
     // calculates display height
     add x6, x6, x6       // doubles that distance
     sub x4, x4, x6       // substracts it from border height
-	add x4, x4, 1		 // fix nidea
+
+//	add x4, x4, 1		 BORRAR !!!!!!! +1
  
-	// turns on the display & the red led
+	// turns on the display
+	movz x10, 0x8d, lsl 16
+    movk x10, 0xebff, lsl 0// sky color
 	bl paintRectangle
 	bl delay
 	bl delay
