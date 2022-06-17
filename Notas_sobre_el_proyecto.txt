@@ -7,3 +7,6 @@ Sintesis del programa:
 
 	Logramos emular el efecto de zoom centrado en el display de la consola y ejecutamos el juego "Grand Theft Plane I". El juego se trata
 de esquivar misiles con el avion.
+
+
+	Manuel: Mi rol en el proyecto fue elaborar las formas geométricas: rectángulo, circulo, triángulo redondo y elipse con rotación, siendo este último lo que más trabajo ocasiono. Para poder hacerlo tuve que aplicar transformaciones lineales sobre la fórmula de la elipse e implementar la serie de Taylor para el seno y el coseno, a su vez tuve que investigar cómo se manejan los números flotantes en ARMv8. Gracias a esto pude hacer que tanto nuestro avión como misil tuvieran 8 posibles direcciones, lo cual nos permitió hacer una animación mucho más compleja.
