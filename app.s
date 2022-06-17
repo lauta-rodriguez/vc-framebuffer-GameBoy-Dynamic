@@ -155,8 +155,9 @@ main:
 
     // calculates display height
     add x6, x6, x6       // doubles that distance
-    sub x4, x4, x6      // substracts it from border height
-	
+    sub x4, x4, x6       // substracts it from border height
+	add x4, x4, 1		 // fix nidea
+ 
 	// turns on the display & the red led
 	bl paintRectangle
 	bl delay
@@ -210,14 +211,12 @@ main:
 		movz x18, 0xed, lsl 16
     	movk x18, 0xca02, lsl 0 
 
-		mov x17, 2
-		mov x15, 160
-		mov x16, 360
-		add x15, x15, x21
-		sub x16, x16, x21
+		mov x17, 6
+		mov x15, 480
+		mov x16, 170
+		sub x15, x15, x21
+		add x16, x16, x21
 		bl paintMissile
-
-		// Missile no more
 
 		// plane going up
 		movz x18, 0x41, lsl 16
@@ -278,6 +277,17 @@ main:
 		sub x15, x15, x21
 		bl paintCloudTypeOne
 
+		// missile
+
+		movz x18, 0xed, lsl 16
+    	movk x18, 0xca02, lsl 0 
+
+		mov x17, 6
+		mov x15, 300
+		mov x16, 350
+		sub x15, x15, x21
+		add x16, x16, x21
+		bl paintMissile
 
 		// plane turning around to the right
 		movz x18, 0x41, lsl 16
@@ -295,7 +305,6 @@ main:
 
 		bl actualizarFrameBuffer
 		bl delaySonic
-		bl delay
 		add x21, x21, 1
 		b loopAnimationTurnAround
 	endAnimationTurnAround:
@@ -337,7 +346,20 @@ main:
 		sub x15, x15, x21
 		bl paintCloudTypeOne
 
+		// missile
+		movz x18, 0xed, lsl 16
+    	movk x18, 0xca02, lsl 0 
 
+		mov x17, 6
+		mov x15, 295
+		mov x16, 355
+		sub x15, x15, x21
+		add x16, x16, x21
+		cmp x16, 435
+		b.gt deleteMissile
+		bl paintMissile
+
+		deleteMissile:
 		// plane going down
 		movz x18, 0x41, lsl 16
 		movk x18, 0x533b, lsl 0
@@ -524,8 +546,22 @@ main:
 		mov x16, 370
 		add x15, x15, x21
 		bl paintCloudTypeOne
+		
+		cmp x21, 130
+		b.lt doNotPaintMissile
 
+		// missile
+		movz x18, 0xed, lsl 16
+    	movk x18, 0xca02, lsl 0 
 
+		mov x17, 2
+		mov x15, 20
+		mov x16, 300
+		add x15, x15, x21
+		sub x16, x16, x21
+		bl paintMissile
+
+		doNotPaintMissile:
 		// plane going up
 		movz x18, 0x41, lsl 16
     	movk x18, 0x533b, lsl 0
@@ -544,7 +580,7 @@ main:
 		bl delaySonic
 		add x21, x21, 1
 		b loopAnimationUP2
-	endAnimationUP2:
+	endAnimationUP2: b infloop
 
 	mov x21, xzr
 	loopAnimationDVDCorner2:
@@ -602,6 +638,7 @@ main:
 
 
 		bl actualizarFrameBuffer
+		b infloop
 		bl delaySonic
 		add x21, x21, 1
 		b loopAnimationDVDCorner2
@@ -664,7 +701,6 @@ main:
 
 		bl actualizarFrameBuffer
 		bl delaySonic
-		bl delay
 		add x21, x21, 1
 		b loopAnimationOoosoo2
 
@@ -728,6 +764,5 @@ main:
 		b loopAnimationRetreat2
 
 	endAnimationRetreat2:
-
 
 infloop: b infloop

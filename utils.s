@@ -3042,8 +3042,8 @@ paintMissile:
     bl paintEllipse 
 
     // Nose of Missile 
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     mov x3, x15
     sub x4, x16, 28
     
@@ -3056,8 +3056,8 @@ paintMissile:
     bl paintRoundedTriangle 
 
     // Back of Missile 
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
 
     mov x3, x15
     add x4, x16, 12
@@ -3076,8 +3076,8 @@ paintMissile:
     ///////////////////////////////////////////////////////////////////////
     Northeast_m:
     // Main Body
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     mov	w3, 26214
 	movk w3, 0x3f66, lsl 16
 	fmov s3, w3 // s3 = -0.8
@@ -3114,8 +3114,8 @@ paintMissile:
     bl paintEllipse 
 
     // Nose of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     add x3, x15, 20
     sub x4, x16, 27
     
@@ -3126,8 +3126,8 @@ paintMissile:
     add x8, x16, 16
 
     // Back of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     sub x3, x15, 7
     add x4, x16, 5
     
@@ -3145,8 +3145,8 @@ paintMissile:
     ///////////////////////////////////////////////////////////////////////
     East_m:
     // Main Body
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     mov	w3, 0
 	fmov s3, w3 // s3 = 0
 
@@ -3181,8 +3181,8 @@ paintMissile:
     bl paintEllipse 
 
     // Nose of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     add x3, x15, 30
     mov x4, x16
     
@@ -3195,8 +3195,8 @@ paintMissile:
     bl paintRoundedTriangle
 
     // Back of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     sub x3, x15, 10
     mov x4, x16
     
@@ -3214,8 +3214,8 @@ paintMissile:
     ///////////////////////////////////////////////////////////////////////
     Southeast_m:
     // Main Body
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     mov	w3, 52429
 	movk w3, 0x400c, lsl 16
 	fmov s3, w3 // s3 = 0.8
@@ -3252,8 +3252,8 @@ paintMissile:
     bl paintEllipse 
 
     // Nose of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     add x3, x15, 20
     add x4, x16, 23
     
@@ -3266,8 +3266,8 @@ paintMissile:
     bl paintRoundedTriangle
 
     // Back of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     sub x3, x15, 5
     sub x4, x16, 4
     
@@ -3285,8 +3285,8 @@ paintMissile:
     ///////////////////////////////////////////////////////////////////////
     South_m:
     // Main Body
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     mov	w3, 62915
 	movk w3, 0x3fc8, lsl 16
 	fmov s3, w3 // s3 = 1.57
@@ -3322,8 +3322,8 @@ paintMissile:
     bl paintEllipse 
 
     // Nose of Missile 
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     mov x3, x15
     add x4, x16, 28
     
@@ -3336,8 +3336,8 @@ paintMissile:
     bl paintRoundedTriangle 
 
     // Back of Missile 
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     mov x3, x15
     sub x4, x16, 12
     
@@ -3355,8 +3355,8 @@ paintMissile:
     ///////////////////////////////////////////////////////////////////////
     Southwest_m:
     // Main Body
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     mov	w3, 26214
 	movk w3, 0x3f66, lsl 16
 	fmov s3, w3 // s3 = -0.8
@@ -3393,8 +3393,8 @@ paintMissile:
     bl paintEllipse 
 
     // Nose of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     sub x3, x15, 20
     add x4, x16, 27
     
@@ -3405,8 +3405,8 @@ paintMissile:
     sub x8, x16, 16
 
     // Back of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     add x3, x15, 7
     sub x4, x16, 5
     
@@ -3424,8 +3424,8 @@ paintMissile:
     ///////////////////////////////////////////////////////////////////////
     West_m:
     // Main Body
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     mov	w3, 0
 	fmov s3, w3 // s3 = 0
 
@@ -3460,8 +3460,8 @@ paintMissile:
     bl paintEllipse 
 
     // Nose of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     sub x3, x15, 30
     mov x4, x16
     
@@ -3474,8 +3474,8 @@ paintMissile:
     bl paintRoundedTriangle
 
     // Back of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     add x3, x15, 10
     mov x4, x16
     
@@ -3493,8 +3493,8 @@ paintMissile:
     ///////////////////////////////////////////////////////////////////////
     Northwest_m:
     // Main Body
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     mov	w3, 52429
 	movk w3, 0x400c, lsl 16
 	fmov s3, w3 // s3 = 0.8
@@ -3531,8 +3531,8 @@ paintMissile:
     bl paintEllipse 
 
     // Nose of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0 
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0 
     sub x3, x15, 20
     sub x4, x16, 23
     
@@ -3545,8 +3545,8 @@ paintMissile:
     bl paintRoundedTriangle
 
     // Back of Missile
-    movz x10, 0x80, lsl 16
-	movk x10, 0x8080, lsl 0
+    movz x10, 0x5E, lsl 16
+    movk x10, 0x6768, lsl 0
     add x3, x15, 5
     add x4, x16, 4
     
