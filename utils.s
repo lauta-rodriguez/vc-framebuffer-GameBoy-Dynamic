@@ -1184,7 +1184,7 @@ drawWindow:
     br lr
     //------------------
 
-drawBase: // done
+drawBase:
     //------------------
     sub sp, sp, 104     // reserve memory in the stack 
     stur x1, [sp,96]    // display frame x coordinate
@@ -1263,7 +1263,7 @@ drawBase: // done
     br lr
     //------------------
 
-drawScreen: // done 
+drawScreen:
     //------------------
     sub sp, sp, 96      // reserve memory in the stack 
     stur x11,[sp,88]
@@ -1369,7 +1369,7 @@ drawScreen: // done
     br lr
     //------------------
 
-drawCartridge: // done
+drawCartridge:
     //------------------
     sub sp, sp, 104      // reserve memory in the stack 
     stur x1, [sp,96]    // x coordinate
@@ -1423,7 +1423,7 @@ drawCartridge: // done
     //------------------
 
 
-drawButtons: // done
+drawButtons:
     //------------------
     sub sp, sp, 80      // reserve memory in the stack
     stur x7, [sp,72]    // temp

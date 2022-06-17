@@ -30,7 +30,7 @@ main:
 	add x2, x2, x4  		// moves down 2/3 of the framebuffer height
 	bl paintRectangle
 
-  	// Furnite
+  	// Furniture
 	bl drawFurniture
 
 	// Every single component dimensions of the gameboy are calculated 
@@ -539,7 +539,6 @@ reset:
 	endAnimationUP2:
 
 	mov x21, xzr
-	// hago que se sigan moviendo para la derecha un rato maś
 	loopAnimationDVDCorner2:
 		// paints the sky 
 		bl paintRectangle
@@ -876,7 +875,8 @@ reset:
 		b loopAnimationRestart
 	endAnimationRestart:
 
-	// sincroniza todo con el frame inicial, avion y nubes
+	// synchronizes the last frame with the initial frame 
+	// to achieve a smooth infinite loop
 	mov x21, xzr
 	loopAnimationSync:
 

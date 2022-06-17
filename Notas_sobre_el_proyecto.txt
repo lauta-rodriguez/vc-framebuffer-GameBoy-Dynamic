@@ -5,8 +5,12 @@ Sintesis del programa:
 
 	El programa genera un Gameboy color® , ubicado en una pieza con vista a las sierras. El gameboy se ha diseñado de manera tal que al modificar los parametros del marco de su display, las dimensiones del gameboy se adaptarán de manera dinámica. 
 
-	Logramos emular el efecto de zoom centrado en el display de la consola y ejecutamos el juego "Grand Theft Plane I". El juego se trata
-de esquivar misiles con el avion.
+	Logramos emular el efecto de zoom centrado en el display de la consola y ejecutamos el juego "Grand Theft Plane I". El juego se trata de esquivar misiles con el avion.
 
+	Manuel: Mi rol en el proyecto fue elaborar las formas geométricas: rectángulo, circulo, triángulo redondo y elipse con rotación, siendo este último lo que más trabajo ocasiono. Para poder hacerlo tuve que aplicar transformaciones lineales sobre la fórmula de la elipse e  implementar la serie de Taylor para el seno y el coseno, a su vez tuve que investigar cómo se manejan los números flotantes en ARMv8. Gracias a esto pude hacer que tanto nuestro avión como misil tuvieran 8 posibles direcciones, lo cual nos permitió hacer una animación mucho más compleja.
 
-	Manuel: Mi rol en el proyecto fue elaborar las formas geométricas: rectángulo, circulo, triángulo redondo y elipse con rotación, siendo este último lo que más trabajo ocasiono. Para poder hacerlo tuve que aplicar transformaciones lineales sobre la fórmula de la elipse e implementar la serie de Taylor para el seno y el coseno, a su vez tuve que investigar cómo se manejan los números flotantes en ARMv8. Gracias a esto pude hacer que tanto nuestro avión como misil tuvieran 8 posibles direcciones, lo cual nos permitió hacer una animación mucho más compleja.
+	Lara: Mi rol en el proyecto fue dibujar la imagen estática. Particularmente el dibujo del gameboy se realizó de forma que este fuera escalable en relación al tamaño del marco de la pantalla, y que a su vez esta quedara centrada en el framebuffer. Es decir que todas las dimensiones del gameboy son calculadas en función de las dimensiones del marco de la pantalla. Esto facilitó la animación del zoom, ya que solo hizo falta implementar un loop que incrementara las dimensiones del marco en cada iteración. Una de las cosas más complicadas del fondo de la imagen estática fue el dibujo del atardecer, para el cuál se tuvieron que implementar varios loops que dibujaran círculos cada vez más chicos, haciendo pequeñas transiciones de color a partir de un color base.
+
+	Lautaro: Fui el nexo entre Manuel y Lara, integrando el codigo de manera progresiva haciendo foco
+	en la animación. Lo más dificil fue "encastrar" las piezas de manera que el movimiento sea fluido
+	y la velocidad a la que se mueven las distintas piezas tenga sentido (velocidad constante).
