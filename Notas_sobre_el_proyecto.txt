@@ -1,0 +1,9 @@
+Grupo: Nieto, Manuel - Kurtz, Lara - Rodriguez, Lautaro 
+
+
+Sintesis del programa:
+
+	El programa genera un Gameboy color® , ubicado en una pieza con vista a las sierras. El gameboy se ha diseñado de manera tal que al modificar los parametros del marco de su display, las dimensiones del gameboy se adaptarán de manera dinámica. 
+
+	Logramos emular el efecto de zoom centrado en el display de la consola y ejecutamos el juego "Grand Theft Plane I". El juego se trata
+de esquivar misiles con el avion.
