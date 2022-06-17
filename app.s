@@ -867,10 +867,6 @@ main:
 		// paints the sky 
 		bl paintRectangle
 
-		// compare and branch
-		cmp x21, 80 // llegar a 340
-		b.eq endAnimationRetreatBoost
-
 		// nubes top left
 		mov x15, 243
 		mov x16, 90
@@ -926,7 +922,58 @@ main:
 	// sincroniza todo con el frame inicial, avion y nubes
 	mov x21, xzr
 	loopAnimationSync:
-	
+
+		// compare and branch
+		cmp x21, 108
+		b.eq endAnimationSync
+
+		// paints the sky 
+		bl paintRectangle
+
+		// nubes top left
+		mov x15, 248
+		mov x16, 90
+		add x15, x15, x21
+		bl paintCloudTypeOne
+		
+		mov x15, 333
+		mov x16, 110
+		add x15, x15, x21
+		bl paintCloudTypeTwo
+		
+		// nubes mid right
+		mov x15, 270
+		mov x16, 250
+		sub x15, x15, x21
+		bl paintCloudTypeOne
+		
+		mov x15, 355
+		mov x16, 270
+		sub x15, x15, x21
+		bl paintCloudTypeTwo
+		
+		// nubes bottom mid
+		mov x15, 280
+		mov x16, 370
+		add x15, x15, x21
+		bl paintCloudTypeOne
+
+		// plane turning around to the right
+		movz x18, 0x41, lsl 16
+		movk x18, 0x533b, lsl 0
+
+		movz x19, 0x9e, lsl 16
+		movk x19, 0x9a75, lsl 0
+
+		mov x17, 1
+		mov x15, 320
+		mov x16, 340
+		bl paintPlane
+
+		bl actualizarFrameBuffer
+		bl delaySonic
+		add x21, x21, 1
+		b loopAnimationSync
 	endAnimationSync:
 
 
