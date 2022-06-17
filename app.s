@@ -921,6 +921,13 @@ main:
 		bl delaySonic
 		add x21, x21, 1
 		b loopAnimationRestart
-	endAnimationRestart: b loopAnimationUP
+	endAnimationRestart:
+
+	// sincroniza todo con el frame inicial, avion y nubes
+	mov x21, xzr
+	loopAnimationSync:
+	
+	endAnimationSync:
+
 
 infloop: b infloop
