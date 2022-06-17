@@ -583,6 +583,7 @@ main:
 	endAnimationUP2:
 
 	mov x21, xzr
+	// hago que se sigan moviendo para la derecha un rato maś
 	loopAnimationDVDCorner2:
 		// paints the sky 
 		bl paintRectangle
@@ -651,7 +652,7 @@ main:
 		add x21, x21, 1
 		b loopAnimationDVDCorner2
 
-	endAnimationDVDCorner2:
+	endAnimationDVDCorner2: 
 
 	mov x21, xzr
 	loopAnimationOoosoo2:
@@ -976,5 +977,60 @@ main:
 		b loopAnimationSync
 	endAnimationSync:
 
+	mov x21, xzr
+	loopAnimationReposition:
+		// compare and branch
+		cmp x21, 191
+		b.eq endAnimationReposition
+
+		// paints the sky 
+		bl paintRectangle
+
+		// nubes top left
+		mov x15, 356
+		mov x16, 90
+		sub x15, x15, x21
+		bl paintCloudTypeOne
+		
+		mov x15, 441
+		mov x16, 110
+		sub x15, x15, x21
+		bl paintCloudTypeTwo
+		
+		// nubes mid right
+		mov x15, 162
+		mov x16, 250
+		add x15, x15, x21
+		bl paintCloudTypeOne
+		
+		mov x15, 247
+		mov x16, 270
+		add x15, x15, x21
+		bl paintCloudTypeTwo
+		
+		// nubes bottom mid
+		mov x15, 388
+		mov x16, 370
+		sub x15, x15, x21
+		bl paintCloudTypeOne
+
+		// plane turning around to the right
+		movz x18, 0x41, lsl 16
+		movk x18, 0x533b, lsl 0
+
+		movz x19, 0x9e, lsl 16
+		movk x19, 0x9a75, lsl 0
+
+		mov x17, 1
+		mov x15, 320
+		mov x16, 340
+		bl paintPlane
+
+		bl actualizarFrameBuffer
+		bl delaySonic
+		add x21, x21, 1
+		b loopAnimationReposition
+
+	endAnimationReposition: b loopAnimationUP
 
 infloop: b infloop

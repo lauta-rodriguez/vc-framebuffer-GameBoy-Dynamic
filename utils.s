@@ -65,7 +65,7 @@ delay:
     stur x9, [sp,8]
     stur lr, [sp,0]
 
-	mov x9, #0xFFFFFF
+	mov x9, #0xFFFFFF // era OxFFFFFF
     delayLoop:
     	cbz x9, endDelay
     	sub x9, x9, #1				
@@ -100,7 +100,7 @@ delaySonic:
     stur x9, [sp,8]
     stur lr, [sp,0]
 
-	mov x9, #0xFFFF
+	mov x9, #0xFFFF  
     delayLoopSonic:
     	cbz x9, endDelaySonic
     	sub x9, x9, #1				
