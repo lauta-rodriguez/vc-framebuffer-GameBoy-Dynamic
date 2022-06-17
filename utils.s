@@ -782,95 +782,107 @@ paintEllipse:
     //------------------
 
 drawFurniture:
+    //  Draws the furniture and the TV 
+
     //------------------
-    sub sp, sp, 56      // reserve memory in the stack 
-    stur x1, [sp,48]    // floor's initial x coordinate
-    stur x2, [sp,40]    // floor's initial y coordinate
-    stur x3, [sp,32]    // furniture width
-    stur x4, [sp,24]     // furniture height
-//    stur x5, [sp, ]
-//    stur x6, [sp, ]
-//    stur x10,[sp, ]
-    stur x11,[sp,16]      // aux register  
-    stur x12,[sp,8]      // aux register
-    stur lr, [sp,0]
+    sub sp, sp, 80      // reserve memory in the stack 
+    stur x1, [sp,72]    // floor's initial x coordinate
+    stur x2, [sp,64]    // floor's initial y coordinate
+    stur x3, [sp,56]    // furniture's width
+    stur x4, [sp,48]    // furniture's height
+    stur x5, [sp,40]
+    stur x6, [sp,32]
+    stur x10,[sp,24]
+    stur x11,[sp,16]    // aux register  
+    stur x12,[sp,8]     // aux register
+    stur lr, [sp,0]     
     //------------------
 
-    // FURNITURE
-	// accents
-	mov x1, 20
-	sub x2, x2, 60
+  // FURNITURE
+  // color
+    movz x10, 0x84, lsl 16	// dark brown for the accents
+    movk x10, 0x4838, lsl 00
+
+  // accents
+	mov x1, 20              // distance from the framebuffer's left border
+	sub x2, x2, 60          // distance from the top of the floor
 	mov x3, 200				// width of the furniture
 	mov x4, 80				// height of the furniture
 
 	mov x11, x1				// saves x coordinate
 	mov x12, x2				// saves y coordinate
-
-	movz x10, 0x84, lsl 16	// dark brown
-    movk x10, 0x4838, lsl 00		
+		
 	bl paintRectangle
 
-    // doors
+  // doors
+    // color
+	movz x10, 0x93, lsl 16	// lighter brown
+    movk x10, 0x513F, lsl 00
+
 	add x1, x1, 5			// dark margin is 5 pixels wide
 	add x2, x2, 5			// dark margin is 5 pixels tall
    	mov x3, 90				// first door
 	sub x4, x4, 10
-
-	movz x10, 0x93, lsl 16	// lighter brown
-    movk x10, 0x513F, lsl 00		
+		
 	bl paintRectangle
 
 	add x1, x1, 100
-	bl paintRectangle		// second door
+	bl paintRectangle       // second door
  
   // TV
-    // restores x and y coordinates
+  // color
+	movz x10, 0x00, lsl 16	// black
+    movk x10, 0x0000, lsl 00
+
+  // restores x and y coordinates
 	mov x1, x11			
 	mov x2, x12			
 
-	add x1, x1, 20
+	add x1, x1, 20          
  	sub x2, x2, 70
-
 	mov x3, 160				// width of the tv
 	mov x4, 60				// height of the tv
 
-	movz x10, 0x00, lsl 16	// black
-    movk x10, 0x0000, lsl 00
 	bl paintRectangle 
 
 	add x1, x1, 80
 	mov x5, 12
 	add x2, x2, 58
 
-	bl paintTriangle
+	bl paintTriangle        // tv base 
 
     //------------------
-    ldur x1, [sp,48]    // floor's initial x coordinate
-    ldur x2, [sp,40]    // floor's initial y coordinate
-    ldur x3, [sp,32]    // furniture width
-    ldur x4, [sp,24]     // furniture height
-    ldur x11,[sp,16]      // aux register  
-    ldur x12,[sp,8]      // aux register
+    ldur x1, [sp,72]    // floor's initial x coordinate
+    ldur x2, [sp,64]    // floor's initial y coordinate
+    ldur x3, [sp,56]    // furniture width
+    ldur x4, [sp,48]    // furniture height
+    ldur x5, [sp,40]
+    ldur x6, [sp,32]
+    ldur x10,[sp,24]
+    ldur x11,[sp,16]    // aux register  
+    ldur x12,[sp,8]     // aux register
     ldur lr, [sp,0]
     add sp, sp, 104     // free memory in the stack
     br lr
     //------------------
 
-
-
 drawWindow:
-    //
-    //  DESCRIPCIÓN DE LA FUNCIÓN   
-    //
+    // Draws the sunset and the window, and paints the wall.
+
+    // The color transitions for the susnset were achived by drawing 
+    // increasingly smaller circles with the same center point. There
+    // are dedicated loops for each color block, and a base color set for 
+    // some of them, in which the base color is slightly modified with
+    // each iteration.
 
     //------------------
     sub sp, sp, 104      // reserve memory in the stack 
-    stur x1, [sp,96]
-    stur x2, [sp,88]
-    stur x3, [sp,80]    
-    stur x4, [sp,72]    
-    stur x5, [sp,64]    
-    stur x6, [sp,56]
+    stur x1, [sp,96]     // x coordinates
+    stur x2, [sp,88]     // y coordinates
+    stur x3, [sp,80]     // width
+    stur x4, [sp,72]     // height
+    stur x5, [sp,64]     // x coordinate for the center of the circle
+    stur x6, [sp,56]     // y coordinate for the center of the circle
     stur x7, [sp,48]    
     stur x8, [sp,40]
     stur x9, [sp,32]
@@ -880,37 +892,39 @@ drawWindow:
     stur lr, [sp,0]
     //------------------
 
-  // DUSK	
-	mov x4, 520
-	mov x5, 210
-	
-	mov x3, 160             // radio del circulo    
-	movz x9, 0x09, lsl 16
-    movk x9, 0x0900, lsl 00 // incremento para x10
-	movz x10, 0x33, lsl 16
-    movk x10, 0x0fee, lsl 00// base blue color
+  // SUNSET	---------------------------------------------
+    mov x3, 160             // radius of the circle 
+	mov x4, 520             // x coordinate for the circle
+	mov x5, 210             // y coordinate for the circle
 
-	mov x7, 7               // decremento del radio en cada iteración
-    mov x8, 2               // cantidad de iteraciones
+	movz x10, 0x33, lsl 16  // base blue color
+    movk x10, 0x0fee, lsl 00
+	  
+	movz x9, 0x09, lsl 16   // x10 increment (color change)
+    movk x9, 0x0900, lsl 00 
+
+	mov x7, 7               // radius decreases x7 amount of pixels in each iteration 
+    mov x8, 2               // iteration amount
     blue_block: 
         cbz x8, end_blue
 
         bl paintCircle
 
         add x10, x10, x9
-        
-        sub x3, x3, x7
+        sub x3, x3, x7      
         sub x8, x8, 1
+
         b blue_block
 
     end_blue:
 
-    movz x9, 0x0f, lsl 16
-    movk x9, 0x0400, lsl 00 // incremento para x10
-    movz x11, 0x00, lsl 16
-    movk x11, 0x0015, lsl 00// decremento para x10
+    movz x9, 0x0f, lsl 16   // x10 increment (color change)
+    movk x9, 0x0400, lsl 00 
 
-    mov x8, 6               // cantidad de iteraciones
+    movz x11, 0x00, lsl 16  // x10 decrement (color change)
+    movk x11, 0x0015, lsl 00
+
+    mov x8, 6               // iteration amount
     purple_block: 
         cbz x8, end_purple
 
@@ -918,20 +932,20 @@ drawWindow:
 
         add x10, x10, x9
         sub x10, x10, x11
-
         sub x3, x3, x7
         sub x8, x8, 1
+
         b purple_block
 
     end_purple:
 
-    mov x8, 6
-    movz x9, 0x0f, lsl 16   // incremento para x10
+    movz x9, 0x0f, lsl 16   // x10 increment (color change)
     movk x9, 0x0600, lsl 00
-    movz x11, 0x00, lsl 16  // decremento para x10
+
+    movz x11, 0x00, lsl 16  // x10 decrement (color change)
     movk x11, 0x0015, lsl 00
 
-    mov x8, 6               // cantidad de iteraciones
+    mov x8, 6               // iteration amount
     orange_block: 
         cbz x8, end_orange
 
@@ -939,19 +953,20 @@ drawWindow:
 
         add x10, x10, x9
         sub x10, x10, x11
-
         sub x3, x3, x7
         sub x8, x8, 1
+
         b orange_block
 
     end_orange:
 
+	movz x10, 0xff, lsl 16  // sets new base color
+    movk x10, 0x7a0f, lsl 00
+
     movz x9, 0x00, lsl 16   
-    movk x9, 0x0f00, lsl 00 // incremento para x10
-	movz x10, 0xff, lsl 16  
-    movk x10, 0x7a0f, lsl 00// sets new color
+    movk x9, 0x0f00, lsl 00 // x10 increment
   
-    mov x8, 6               // cantidad de iteraciones
+    mov x8, 6               // iteration amount
     yellow_block: 
         cbz x8, end_yellow
 
@@ -965,156 +980,166 @@ drawWindow:
 
     end_yellow:
 
-  // WINDOW FRAME - a partir de las coordenadas del centro del círculo
-    mov x1, x4  //coordenadas del centro
-    mov x2, x5 
-
-    // frame dimentions: 210(width) by 110(height)
+  // WINDOW FRAME ----------------------------------------- 
+  // Drawn using the circle center coordinates as a reference
+  
+    // color
 	movz x10, 0x61, lsl 16	// dark brown
     movk x10, 0x2112, lsl 00
 
-    mov x3, 210         // sets frame width
+    // circle center coordinates
+    mov x1, x4          
+    mov x2, x5  
+
+    // frame dimentions: 210 by 110
+    mov x3, 210         // sets horizontal rectangle width
     lsr x8, x3, 1
-    sub x1, x1, x8      // moves half the window's width left
-    mov x4, 8           // window frame is 5 pixels tall 
-    bl paintRectangle   // BOTTOM FRAME
+    sub x1, x1, x8      // moves to the bottom left corner of the frame
+    mov x4, 8           // sets horizontal rectangle height 
+    bl paintRectangle   // BOTTOM OF THE FRAME
 
-    mov x3, 8           // frame is 5 pixels wide
-    mov x4, 110         // frame is x4 pixels tall
-    sub x8, x4, 8       // + frame width
-    sub x2, x2, x8  
-	bl paintRectangle   // LEFT FRAME
+    mov x3, 8           // sets vertical rectangle width
+    mov x4, 110         // sets vertical rectangle height
+    sub x8, x4, 8       
+    sub x2, x2, x8      // moves to the top left corner of the frame
+	bl paintRectangle   // LEFT SIDE OF THE FRAME
 
-    // saves (x1, x2) in (x11, x12) -> para dibujar las hojas de la ventana
+    // saves (x1, x2) in (x11, x12)
     mov x11, x1          // x coordinate of the top frame
     mov x12, x2          // y coordinate of the top frame
     
-    mov x3, 210
-    mov x4, 8
-    bl paintRectangle   // TOP FRAME
+    mov x3, 210         // sets horizontal rectangle width 
+    mov x4, 8           // sets horizontal rectangle height
+    bl paintRectangle   // TOP OF THE FRAME
 
-    // antes de ir al right frame, parar al meido y dibujar la línea 
-    // que divide la ventana a la mitad
-
-    sub x8, x3, 8       // window width minus frame width
+    sub x8, x3, 8       
     lsr x8, x8, 1       
-    add x1, x1, x8
-    mov x3, 8
-    mov x4, 110
-    bl paintRectangle   // MIDDLE FRAME
+    add x1, x1, x8      // moves to the middle of the window
+    mov x3, 8           // sets vertical rectangle width
+    mov x4, 110         // sets vertical rectangle height
+    bl paintRectangle   // MIDDLE OF THE FRAME
           
-    add x1, x1, x8
-    bl paintRectangle   // RIGHT FRAME
+    add x1, x1, x8      // moves to the top right corner of the frame    
+    bl paintRectangle   // RIGHT SIDE OF THE FRAME
      
-  // WALL
-    movz x10, 0xC2, lsl 16
-    movk x10, 0x8340, lsl 00// brown
+  // WALL --------------------------------
+    // color
+    movz x10, 0xC2, lsl 16  // dark brown
+    movk x10, 0x8340, lsl 00
 
-    // la coordenada y del tope del borde es la altura del rectángulo a pintar
-    mov x4, x2          // altura del top frame
+    // paints the top rectangle - wall visible above the window
+    mov x4, x2          
     mov x1, 0
     mov x2, 0
     mov x3, SCREEN_WIDTH
     bl paintRectangle
 
-    mov x2, x4          // x4 es la distancia entre el tope del framebuffer y el tope del window frame
-    mov x4, 110         // seteo una nueva altura para el rectángulo a pintar
-    sub x3, x3, x5      // x5 contains the x coordinate of the center of the circle (resta la ventana)
-    sub x3, x3, 15      // resta lo que queda de pared
+    // paints the left rectangle - wall visible at the left side of the window
+    mov x2, x4          
+    mov x4, 110         
+    sub x3, x3, x5      
+    sub x3, x3, 15      
     bl paintRectangle
 
-    mov x1, x3          // se mueve al comienzo de la ventana
-    add x1, x1, 210     // se mueve a la derecha de la ventana
-    mov x3, 15          // ancho de lo que queda de pared
+    // paints the right rectangle - wall visible at the right side of the window
+    mov x1, x3          
+    add x1, x1, 210     
+    mov x3, 15          
     bl paintRectangle
 
-    mov x1, 0           // se mueve al comienzo del framebuffer
-    add x2, x2, 110     // se mueve abajo de la ventana
+    // paints the bottom rectangle - wall visible at the bottom of the window
+    mov x1, 0           
+    add x2, x2, 110     
     mov x3, SCREEN_WIDTH
     mov x4, 300
     bl paintRectangle
 
-  // Hojas de las ventanas
+  // Window opening
+    // color
 	movz x10, 0x61, lsl 16	// dark brown
     movk x10, 0x2112, lsl 00
 
-    mov x1, x11     // x11 - x1 es la distancia entre el frame y la hoja
+    // moves (x11, x12) back to (x1, x2) 
+    mov x1, x11     
     mov x2, x12
 
-    mov x3, 1
-    mov x4, 9
-    mov x7, xzr
+    // draws the diagonal line at the top left corner of the frame
+    mov x3, 1           
+    mov x4, 9           // line width 
+
+    mov x7, xzr         //  line height 
     diagonalRightUp:
         cmp x7, 35   
         b.eq end_diagonalRightUp
 
         bl paintRectangle
-        add x1, x1, 1   // al final del loop queda x1 + 35
-        sub x2, x2, 1   // al final del loop queda x2 + 35
+        add x1, x1, 1   
+        sub x2, x2, 1   
 
         add x7, x7, 1
         b diagonalRightUp
     end_diagonalRightUp:
 
-    mov x3, 8           // ancho del frame
-    mov x4, 110         // altura del frame
+    // draws the left vertical line
+    mov x3, 8           
+    mov x4, 110         
+    add x4, x4, 70      // 35+35
+    bl paintRectangle   
 
-    add x4, x4, 35      // suma la distancia hasta el tope de la línea diagonal
-    add x4, x4, 35      // dos veces
-    bl paintRectangle
-
+    // draws the middle horizontal line at the left 
     sub x1, x1, 35
-    add x2, x2, 35
-    add x2, x2, 51      // (110/2)-(8/2) -> barra horizontal del medio
-
+    add x2, x2, 86      // (110/2)-(8/2)+ 35 
     mov x3, 35
     mov x4, 8
     bl paintRectangle
 
-    mov x3, 1
-    mov x4, 9
-    add x2, x2, 51      // (110/2)-(8/2) -> le resta el borde de abajo
-    mov x7, xzr
+    // draws the diagonal line at the bottom left corner of the frame
+    mov x3, 1   
+    mov x4, 9           // line width
+    add x2, x2, 51      // (110/2)-(8/2)
+
+    mov x7, xzr         // line height
     diagonalRightDown:
         cmp x7, 35   
         b.eq end_diagonalRightDown
 
         bl paintRectangle
-        add x1, x1, 1   // al final del loop queda x1 + 35
-        add x2, x2, 1   // al final del loop queda x2 + 35
+        add x1, x1, 1   
+        add x2, x2, 1   
 
         add x7, x7, 1
         b diagonalRightDown
     end_diagonalRightDown:
 
-    // moves to the left rigth frame (moves window width rightwards)
-
-    sub x1, x1, 35
+    // draws the diagonal line at the bottom right corner of the frame
+    sub x1, x1, 35      
     sub x2, x2, 35
+
     add x1, x1, 209
 
     mov x3, 1
-    mov x4, 9
+    mov x4, 9           // line width
+
     mov x7, xzr
     diagonalLeftDown:
-        cmp x7, 35   
+        cmp x7, 35      // line height
         b.eq end_diagonalLeftDown
 
         bl paintRectangle
-        sub x1, x1, 1   // al final del loop queda x1 - 35
-        add x2, x2, 1   // al final del loop queda x2 + 35
+        sub x1, x1, 1   
+        add x2, x2, 1   
 
         add x7, x7, 1
         b diagonalLeftDown
     end_diagonalLeftDown:
 
-    sub x2, x2, 35
-    sub x2, x2, 51
+    sub x2, x2, 86      // 35+51
 
     mov x3, 35
     mov x4, 8
     bl paintRectangle
 
+    // draws the diagonal line at the bottom right corner of the frame
     add x1, x1, 35
     sub x2, x2, 51
 
