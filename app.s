@@ -6,17 +6,16 @@
 .include "utils.s"
 
 .globl main
-
 main:
 
 	adr x1, dir_frameBuffer
-	str x0, [x1] // Guardo la dirección de memoria del frame-buffer en dir_frameBuffer
-	ldr x0, =bufferSecundario // Pongo en x0 la dirección base del buffer secundario
+	str x0, [x1] // Save the framebuffer memory address in dir_FrameBuffer
+	ldr x0, =bufferSecundario // Load the secondary framebuffer base address in x0
 
 	//---------------- CODE HERE ------------------------------------
 	bl drawWindow
 
-  	// FLOOR
+  	// Floor
 	movz x10, 0x55, lsl 16	// grey (floor)
     movk x10, 0x5864, lsl 00	
 
@@ -30,57 +29,26 @@ main:
 	add x2, x2, x4  		// moves down 2/3 of the framebuffer height
 	bl paintRectangle
 
-  	// Mueble
+  	// Furnite
 	bl drawFurniture
 
-	//----------------------GAMEBOY----------------------------
-	// Todo se calcula en función de las coordenadas del top-left
-	// corner del borde de la pantalla (x1, x2) y las dimensiones
-	// del borde (x3, x4) que es el cuadrado que incluye al display
+	// Every single component dimensions are  calculated based on the top-left corner
+	// of the display (x1, x2) and the dimensions of the display frame (x3,x4)
 
-	// Para aumentar el tamaño del gameboy modificar (x3, x4)
-	// Se va a centrar todo en función de ese rectángulo
+	// To readjust the gameboy size, modify the coordinates (x3, x4)
+	// Everything will be centered in relation to that rectangle
 
-	// Para hacer el zoom in quitar el offset y cambiar (x3, x4)
-	// a (640,480)
-
-    //Inicializo los registros
-    mov x1, xzr		// gameboy display x coordinate
-    mov x2, xzr		// gameboy display y coordinate
-	mov x3, xzr		// 
-	mov x4, xzr		// 
-	mov x13, xzr	// temp
-	mov x14, xzr	// temp
-
-	// Parámetros del frame del display del gameboy ("del" combo x3) 
+	// Gameboy's display frame parameters
 	mov x3, 160		// width
 	mov x4, 100		// height
-    mov x13, SCREEN_WIDTH // framebuffer width
-    mov x14, SCREEN_HEIGH // framebuffer height 
 
-    // center border horizontally in the framebuffer
-    sub x13, x13, x3      // substracts base width from framebuffer width 
-    lsr x13, x13, 1       // divides it in half
-    add x1, x1, x13       // move that amount of pixels right
-   
-    // center border vertically in the framebuffer
-    sub x14, x14, x4      // substracts base height from framebuffer height 
-    lsr x14, x14, 1       // divides it in half
-    add x2, x2, x14       // move that amount of pixels right
-
-	// Agrego un offset negativo de 10 pixeles a la dimensión 
-	// vertical para que entre la animación del cartucho
-	// smoothly move the gameboy upwards 10 pixels and thennn
-	// zoom in 
-	sub x2, x2, 10
-	//----------------------GAMEBOY END-------------------------
 	//----------------------ZOOM IN GAMEBOY DISPLAY-------------
 	zoomIn:
 
 		cmp x4, 472
 		b.ge endZoomIn
 
-		//Inicializo los registros
+		//Registers initalization
 	    mov x1, xzr		// gameboy display x coordinate
 	    mov x2, xzr		// gameboy display y coordinate
 	
@@ -166,6 +134,8 @@ main:
 	bl delay
 
 	//----------------------ANIMATION------------------------
+
+reset:
 
 	// aux register x21
 	mov x21, xzr
@@ -978,10 +948,10 @@ main:
 	endAnimationSync:
 
 	mov x21, xzr
-	loopAnimationReposition:
+	loopAnimationSync2:
 		// compare and branch
 		cmp x21, 191
-		b.eq endAnimationReposition
+		b.eq endAnimationSync2
 
 		// paints the sky 
 		bl paintRectangle
@@ -1029,8 +999,8 @@ main:
 		bl actualizarFrameBuffer
 		bl delaySonic
 		add x21, x21, 1
-		b loopAnimationReposition
+		b loopAnimationSync2
 
-	endAnimationReposition: b loopAnimationUP
+	endAnimationSync2:
 
-infloop: b infloop
+infloop: b reset
