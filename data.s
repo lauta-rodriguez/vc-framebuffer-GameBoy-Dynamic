@@ -7,6 +7,8 @@ bufferSecundario: .skip BYTES_FRAMEBUFFER
 
 dir_frameBuffer: .dword 0 // Variable para guardar la dirección de memoria del comienzo del frame buffer
 
+.equ SCREEN_PIXELS_div_2_menos_1, SCREEN_PIXELS/2 - 1
+screen_pixels_div_2_menos_1: .dword SCREEN_PIXELS_div_2_menos_1 // Último indice tomando los elementos como dword
 .equ SCREEN_WIDTH, 640
 .equ SCREEN_HEIGH, 480
 .equ SCREEN_PIXELS, SCREEN_WIDTH * SCREEN_HEIGH

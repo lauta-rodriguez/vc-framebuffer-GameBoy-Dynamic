@@ -74,7 +74,7 @@ main:
 	// zoom in 
 	sub x2, x2, 10
 	//----------------------GAMEBOY END-------------------------
-
+	//----------------------ZOOM IN GAMEBOY DISPLAY-------------
 	zoomIn:
 
 		cmp x4, 472
@@ -108,6 +108,10 @@ main:
 
 		bl drawCartridge
 	    bl drawBase
+
+		// led colour
+		movz x11, 0xAD, lsl 16
+    	movk x11, 0x0952, lsl 0
 		bl drawScreen
 		bl drawButtons
 
@@ -120,7 +124,14 @@ main:
 
 
 	endZoomIn: 
-	
+	//----------------------ZOOM IN GAMEBOY DISPLAY END---------
+	// turning on the led light
+
+	// led colour
+	movz x11, 0xff, lsl 16
+    movk x11, 0x160c, lsl 0
+	bl drawScreen
+	bl actualizarFrameBuffer
 
 	// calculates x coordinate for the display
     mov x5, 8
@@ -146,7 +157,7 @@ main:
     add x6, x6, x6       // doubles that distance
     sub x4, x4, x6      // substracts it from border height
 	
-	// turns on the display
+	// turns on the display & the red led
 	bl paintRectangle
 	bl delay
 	bl delay
@@ -194,6 +205,19 @@ main:
 		add x15, x15, x21
 		bl paintCloudTypeOne
 
+		// Missile
+		
+		movz x18, 0xed, lsl 16
+    	movk x18, 0xca02, lsl 0 
+
+		mov x17, 2
+		mov x15, 160
+		mov x16, 360
+		add x15, x15, x21
+		sub x16, x16, x21
+		bl paintMissile
+
+		// Missile no more
 
 		// plane going up
 		movz x18, 0x41, lsl 16
@@ -210,7 +234,8 @@ main:
 
 
 		bl actualizarFrameBuffer
-		bl delay
+
+		bl delaySonic
 		add x21, x21, 1
 		b loopAnimationUP
 
@@ -269,7 +294,7 @@ main:
 
 
 		bl actualizarFrameBuffer
-		bl delay
+		bl delaySonic
 		bl delay
 		add x21, x21, 1
 		b loopAnimationTurnAround
@@ -328,7 +353,7 @@ main:
 
 
 		bl actualizarFrameBuffer
-		bl delay
+		bl delaySonic
 		add x21, x21, 1
 		b loopAnimationRetreat
 
@@ -390,7 +415,7 @@ main:
 
 
 		bl actualizarFrameBuffer
-		bl delay
+		bl delaySonic
 		add x21, x21, 1
 		b loopAnimationDVDCorner
 
@@ -456,7 +481,7 @@ main:
 		bl paintPlane
 
 		bl actualizarFrameBuffer
-		bl delay
+		bl delaySonic
 		bl delay
 		add x21, x21, 1
 		b loopAnimationOoosoo
@@ -516,7 +541,7 @@ main:
 
 
 		bl actualizarFrameBuffer
-		bl delay
+		bl delaySonic
 		add x21, x21, 1
 		b loopAnimationUP2
 	endAnimationUP2:
@@ -577,7 +602,7 @@ main:
 
 
 		bl actualizarFrameBuffer
-		bl delay
+		bl delaySonic
 		add x21, x21, 1
 		b loopAnimationDVDCorner2
 
@@ -634,12 +659,11 @@ main:
 		mov x16, 144
 
 		add x15, x15, x21
-		add x15, x15, 1
 
 		bl paintPlane
 
 		bl actualizarFrameBuffer
-		bl delay
+		bl delaySonic
 		bl delay
 		add x21, x21, 1
 		b loopAnimationOoosoo2
@@ -652,7 +676,7 @@ main:
 		bl paintRectangle
 
 		// compare and branch
-		cmp x21, 130
+		cmp x21, 110
 		b.eq endAnimationRetreat2
 
 		// nubes top left
@@ -699,10 +723,11 @@ main:
 
 
 		bl actualizarFrameBuffer
-		bl delay
+		bl delaySonic
 		add x21, x21, 1
 		b loopAnimationRetreat2
 
 	endAnimationRetreat2:
+
 
 infloop: b infloop
